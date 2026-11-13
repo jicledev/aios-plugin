@@ -8,7 +8,7 @@ argument-hint: "(aucun)"
 
 Tu prépares un brief court, lisible en moins d'une minute : **les priorités du jour, les rendez-vous, les projets en retard**. Tu ne fais que lire le vault et l'agenda. Le seul fichier que tu écris est `brief.md`, à la racine du vault. L'utilisateur n'est peut-être pas technique : écris simplement, sans jargon.
 
-La date du jour est celle de ton environnement. Si tu ne la connais pas, lance `date +%F` et `date +%A`.
+**Ce brief tourne souvent seul, à heure fixe, sans personne pour accepter une autorisation : n'utilise aucune commande du terminal.** Lis les fiches avec tes outils de lecture de fichiers (recherche de fichiers par motif, lecture de fichier), qui ne demandent pas d'autorisation dans le vault. Écris `brief.md` avec ton outil d'écriture de fichier. La date du jour figure dans ton contexte : déduis-en toi-même le jour de la semaine.
 
 ## Étapes
 
@@ -20,7 +20,7 @@ La date du jour est celle de ton environnement. Si tu ne la connais pas, lance `
 
 2. **Lire l'agenda du jour**, en lecture seule.
    - Cherche, parmi les outils de la session, un outil d'agenda qui **liste ou recherche des événements**. Le nom contient en général `list_events` ou `search_events`. Il faut parfois le charger avant de l'appeler.
-   - Demande les événements d'aujourd'hui, de 00:00 à 23:59 **heure locale**. Passe ces bornes avec le décalage horaire local (par exemple `2026-11-16T00:00:00+01:00`, obtenu avec `date +%:z` si besoin), ou avec le fuseau de l'agenda (`timeZone`, donné par la liste des agendas). Jamais avec `Z`.
+   - Demande les événements d'aujourd'hui, de 00:00 à 23:59 **heure locale**. Passe ces bornes avec le fuseau de l'agenda (`timeZone`, donné par la liste des agendas) ou avec le décalage horaire local correspondant (par exemple `2026-11-16T00:00:00+01:00` pour Paris en hiver). Jamais avec `Z`.
    - Affiche les heures en heure locale, jamais en UTC. Si tu ne peux pas déterminer le fuseau, écris les heures telles que l'agenda les donne, avec leur décalage, plutôt que de deviner.
    - S'il n'y a aucun outil d'agenda, ou s'il échoue, la rubrique sera « Agenda non connecté. ».
 
