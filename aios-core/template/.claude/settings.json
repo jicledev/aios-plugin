@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "ask": [],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push *--force*)",
+      "Bash(git push * -f*)",
+      "Bash(git push * +*)",
+      "Bash(git reset --hard*)",
+      "Bash(git commit --amend*)",
+      "Bash(git rebase*)",
+      "Bash(git filter-branch*)",
+      "Bash(git rm*)",
+      "Bash(git clean*)",
+      "Bash(rm *)",
+      "Bash(rm -rf*)"
+    ]
+  }
+}

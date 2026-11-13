@@ -1,0 +1,15 @@
+# Secrets et fichiers sensibles : jamais sauvegardés
+.env
+.env.*
+*.key
+*.pem
+prive-local/
+
+# Obsidian : état propre à la machine
+.obsidian/workspace*.json
+.obsidian/cache
+.trash/
+
+# Réglages locaux de Claude : propres à cette machine
+.claude/settings.local.json
+CLAUDE.local.md

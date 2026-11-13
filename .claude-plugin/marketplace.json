@@ -1,0 +1,13 @@
+{
+  "name": "aios-marketplace",
+  "owner": {
+    "name": "jicledev"
+  },
+  "plugins": [
+    {
+      "name": "aios",
+      "source": "./aios-core",
+      "description": "AIOS — ton système d'exploitation IA pour Claude Code."
+    }
+  ]
+}
