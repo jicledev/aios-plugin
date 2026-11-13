@@ -43,6 +43,7 @@ Tu installes le vault AIOS de l'utilisateur dans le dossier courant, puis tu le 
    - Parcours la liste des outils MCP (`mcp__…`) disponibles dans cette session. Retiens ceux que le garde-fou du plugin juge sensibles, avec la même règle que `../../scripts/garde.sh` (lis-le) : dans la partie du nom après le dernier `__`, découpée en mots (camelCase, `_`, `-`, `.`), un mot de `VERBES_SENSIBLES`, ou, à défaut, l'un des mots de `SOUS_CHAINES` collé à d'autres (ex. `sendemail`).
    - Montre la liste à l'utilisateur, groupée par connecteur, et explique : « Pour ces actions, je te demanderai toujours ton accord, même en mode automatique. »
    - Après accord, ajoute leurs noms exacts (`mcp__<serveur>__<outil>`) au tableau `permissions.ask` de `.claude/settings.json` du vault, sans retirer ce qui y est déjà.
+   - Exception : dans le serveur `scheduled-tasks` (les tâches programmées de l'app de bureau), `create_scheduled_task` et les outils `list_…` ne sont pas sensibles. Ils créent ou listent des tâches sur cet ordinateur sans rien envoyer, et le garde-fou les laisse passer. Ne les ajoute pas à `permissions.ask`. Modifier, supprimer ou lancer une tâche existante reste sensible.
    - Si aucun connecteur n'est branché, dis-le : le garde-fou du plugin protégera les connecteurs ajoutés plus tard, et relancer `/aios:demarrer` complétera la liste.
 
 7. **Sauvegarde.**
@@ -55,9 +56,21 @@ Tu installes le vault AIOS de l'utilisateur dans le dossier courant, puis tu le 
        ```
      - **`gh` est absent ou pas connecté** : ne fais taper aucune commande à l'utilisateur, et ne l'envoie pas dans un terminal. Dis-lui : « La sauvegarde en ligne demande une connexion à GitHub qu'on fera plus tard, avec de l'aide si besoin. En attendant, la sauvegarde locale continue : chaque modification est enregistrée sur ton ordinateur. » Puis passe à l'étape suivante.
 
-8. **Obsidian.** Explique que le dossier peut s'ouvrir dans Obsidian (« Ouvrir un dossier comme coffre ») pour lire et naviguer.
+8. **Brief du matin et rappel du bilan.**
+   - Cherche l'outil `create_scheduled_task` (serveur `scheduled-tasks`) parmi les outils de la session. Il faut parfois le charger. S'il n'existe pas, dis : « Les rappels automatiques demandent l'app de bureau Claude. Tu peux lancer `/aios:brief` à la main quand tu veux. » Puis passe à l'étape suivante.
+   - Appelle `list_scheduled_tasks`. Si les tâches `aios-brief-du-matin` et `aios-rappel-bilan` existent déjà, dis-le, ne pose pas la question ci-dessous et va directement au point des autorisations. Ne crée jamais une tâche qui existe déjà.
+   - Demande : « Veux-tu recevoir un brief chaque matin de semaine à 8 h (tes priorités, tes rendez-vous, tes projets en retard) et un rappel du bilan le dimanche à 18 h ? »
+   - Seulement après un « oui » explicite, crée les tâches manquantes avec `create_scheduled_task`, en remplaçant `<chemin du vault>` par le chemin absolu du dossier courant :
+     - `taskId: aios-brief-du-matin`, `title: Brief du matin`, `cronExpression: 0 8 * * 1-5`, `prompt` : « Tu es dans le vault AIOS `<chemin du vault>`. Si le dossier courant n'est pas ce vault, dis-le et arrête-toi. Sinon, lance `/aios:brief`. »
+     - `taskId: aios-rappel-bilan`, `title: Rappel du bilan`, `cronExpression: 0 18 * * 0`, `prompt` : « Tu es dans le vault AIOS `<chemin du vault>`. Compte les fichiers de `00-inbox/` (sous-dossiers compris, sans les fichiers cachés), puis affiche uniquement : « C'est dimanche : ton bilan de la semaine t'attend (N éléments dans l'inbox). Tape `/aios:bilan` quand tu veux. » Ne modifie rien. »
+   - **Autorisations**, à faire dès que les tâches existent, même si les tâches existent déjà (un agenda a pu être branché depuis). Pour que le brief de 8 h n'attende pas d'autorisation, ajoute au tableau `permissions.allow` de `.claude/settings.json` du vault, sans retirer ce qui y est déjà, **uniquement** :
+     - `Edit(./brief.md)`, l'écriture du fichier du brief ;
+     - les outils de **lecture** de l'agenda présents dans la session : ceux d'un connecteur d'agenda dont le nom commence par `list_`, `get_` ou `search_` (par exemple `mcp__<serveur>__list_events`). Jamais un outil qui crée, modifie, supprime ou répond.
+   - Explique : les tâches ne tournent que quand l'app de bureau Claude est ouverte. Si l'ordinateur était éteint à l'heure prévue, elles partent au prochain lancement. Elles apparaissent dans la barre latérale, section des tâches programmées.
 
-9. **Conclure** en trois lignes : ce qui est en place, les commandes utiles (`/aios:capture`, `/aios:bilan`, `/aios:etat-projet`, `/aios:importer`), et le conseil de faire un `/aios:bilan` chaque semaine.
+9. **Obsidian.** Explique que le dossier peut s'ouvrir dans Obsidian (« Ouvrir un dossier comme coffre ») pour lire et naviguer.
+
+10. **Conclure** en trois lignes : ce qui est en place, les commandes utiles (`/aios:brief`, `/aios:capture`, `/aios:bilan`, `/aios:etat-projet`, `/aios:importer`), et le conseil de faire un `/aios:bilan` chaque semaine.
 
 ## Ce que tu ne fais jamais
 

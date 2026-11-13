@@ -38,6 +38,12 @@ IFS= read -r -d '' entree
 json_extraire "$entree" tool_name
 outil="$JSON_VAL"
 [[ "$outil" == mcp__* ]] || exit 0
+# Tâches programmées de l'app de bureau : créer et lister sont libres (local, sans envoi).
+# Modifier, supprimer ou lancer une tâche existante reste gardé : une consigne réécrite
+# tournerait ensuite chaque jour sans contrôle.
+case "$outil" in
+  mcp__scheduled-tasks__create_scheduled_task|mcp__scheduled-tasks__list_*) exit 0 ;;
+esac
 verbe_sensible "$outil"
 [ -n "$VERBE" ] || exit 0
 
