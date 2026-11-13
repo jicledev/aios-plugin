@@ -1,6 +1,6 @@
 ---
 name: demarrer
-description: Installe et personnalise un vault AIOS. À utiliser au premier lancement dans un dossier vide, ou quand l'utilisateur dit « démarrer », « mettre à jour mon AGENTS.md » ou « refaire mon profil ».
+description: Installe et personnalise un vault AIOS. À utiliser au premier lancement dans un dossier vide, ou quand l'utilisateur dit « démarrer », « mettre à jour mon AGENTS.md », « refaire mon profil » ou « changer l'heure de mon brief ».
 argument-hint: "(aucun)"
 ---
 
@@ -58,11 +58,19 @@ Tu installes le vault AIOS de l'utilisateur dans le dossier courant, puis tu le 
 
 8. **Brief du matin et rappel du bilan.**
    - Cherche l'outil `create_scheduled_task` (serveur `scheduled-tasks`) parmi les outils de la session. Il faut parfois le charger. S'il n'existe pas, dis : « Les rappels automatiques demandent l'app de bureau Claude. Tu peux lancer `/aios:brief` à la main quand tu veux. » Puis passe à l'étape suivante.
-   - Appelle `list_scheduled_tasks`. Si les tâches `aios-brief-du-matin` et `aios-rappel-bilan` existent déjà, dis-le, ne pose pas la question ci-dessous et va directement au point des autorisations. Ne crée jamais une tâche qui existe déjà.
-   - Demande : « Veux-tu recevoir un brief chaque matin de semaine à 8 h (tes priorités, tes rendez-vous, tes projets en retard) et un rappel du bilan le dimanche à 18 h ? »
-   - Seulement après un « oui » explicite, crée les tâches manquantes avec `create_scheduled_task`, en remplaçant `<chemin du vault>` par le chemin absolu du dossier courant :
-     - `taskId: aios-brief-du-matin`, `title: Brief du matin`, `cronExpression: 0 8 * * 1-5`, `prompt` : « Tu es dans le vault AIOS `<chemin du vault>`. Si le dossier courant n'est pas ce vault, dis-le et arrête-toi. Sinon, lance `/aios:brief`. »
-     - `taskId: aios-rappel-bilan`, `title: Rappel du bilan`, `cronExpression: 0 18 * * 0`, `prompt` : « Tu es dans le vault AIOS `<chemin du vault>`. Compte les fichiers de `00-inbox/` (sous-dossiers compris, sans les fichiers cachés), puis affiche uniquement : « C'est dimanche : ton bilan de la semaine t'attend (N éléments dans l'inbox). Tape `/aios:bilan` quand tu veux. » Ne modifie rien. »
+   - Appelle `list_scheduled_tasks`. Ne crée jamais une tâche qui existe déjà.
+     - **Les deux tâches `aios-brief-du-matin` et `aios-rappel-bilan` existent** : donne leurs horaires actuels en clair (par exemple « brief du lundi au vendredi à 8 h 30, rappel le dimanche à 18 h ») et demande si l'utilisateur veut les changer. S'il veut changer, pose les questions d'horaires ci-dessous pour la tâche concernée, puis modifie-la avec `update_scheduled_task` (son `cronExpression` seulement). Le garde-fou demandera son accord : c'est normal. Sinon, va directement au point des autorisations.
+     - **Il en manque au moins une** : continue ci-dessous, seulement pour celle(s) qui manquent.
+   - Demande : « Veux-tu recevoir un brief du matin (tes priorités, tes rendez-vous, tes projets en retard) et un rappel pour faire ton bilan de la semaine ? » Si c'est non, passe à l'étape suivante.
+   - Après un « oui », pose les questions d'horaires, une à la fois, en donnant à chaque fois la valeur par défaut :
+     - « À quelle heure veux-tu ton brief ? (8 h par défaut) »
+     - « Quels jours ? (du lundi au vendredi par défaut) »
+     - « À quel moment veux-tu le rappel du bilan ? (le dimanche à 18 h par défaut) »
+     - Si l'utilisateur ne sait pas ou dit « comme tu veux », prends la valeur par défaut. Répète ensuite les horaires retenus en une phrase et attends sa confirmation.
+   - Traduis les réponses en expression cron, en heure locale : `<minute> <heure> * * <jours>`, avec les jours de 0 (dimanche) à 6 (samedi). Exemples : 8 h du lundi au vendredi = `0 8 * * 1-5` (par défaut pour le brief) ; 7 h 45 tous les jours = `45 7 * * *` ; dimanche 18 h = `0 18 * * 0` (par défaut pour le rappel).
+   - Crée les tâches manquantes avec `create_scheduled_task`, en remplaçant `<chemin du vault>` par le chemin absolu du dossier courant et `<jour et heure>` par le moment choisi pour le rappel (par exemple « dimanche 18 h ») :
+     - `taskId: aios-brief-du-matin`, `title: Brief du matin`, `description: Brief du matin du vault AIOS`, `cronExpression` : celle du brief, `prompt` : « Tu es dans le vault AIOS `<chemin du vault>`. Si le dossier courant n'est pas ce vault, dis-le et arrête-toi. Sinon, lance `/aios:brief`. »
+     - `taskId: aios-rappel-bilan`, `title: Rappel du bilan`, `description: Rappel du bilan hebdomadaire du vault AIOS (<jour et heure>)`, `cronExpression` : celle du rappel, `prompt` : « Tu es dans le vault AIOS `<chemin du vault>`. Si le dossier courant n'est pas ce vault, dis-le et arrête-toi. Sinon, compte les fichiers de `00-inbox/` (sous-dossiers compris, sans les fichiers cachés), puis affiche uniquement : « C'est l'heure de ton bilan de la semaine (N éléments dans l'inbox). Tape `/aios:bilan` quand tu veux. » Ne modifie rien. »
    - **Autorisations**, à faire dès que les tâches existent, même si les tâches existent déjà (un agenda a pu être branché depuis). Pour que le brief de 8 h n'attende pas d'autorisation, ajoute au tableau `permissions.allow` de `.claude/settings.json` du vault, sans retirer ce qui y est déjà, **uniquement** :
      - `Edit(./brief.md)`, l'écriture du fichier du brief ;
      - les outils de **lecture** de l'agenda présents dans la session : ceux d'un connecteur d'agenda dont le nom commence par `list_`, `get_` ou `search_` (par exemple `mcp__<serveur>__list_events`). Jamais un outil qui crée, modifie, supprime ou répond.
