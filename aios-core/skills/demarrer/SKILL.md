@@ -48,11 +48,12 @@ Tu installes le vault AIOS de l'utilisateur dans le dossier courant, puis tu le 
 7. **Sauvegarde.**
    - Si `git config user.name` ou `user.email` est vide dans le vault, demande un nom et un email (ou l'adresse « noreply » GitHub) et configure-les **localement** (`git config user.name …` sans `--global`).
    - Enregistre l'état actuel : `git add -A`, puis, seulement s'il y a des changements (`git diff --cached --quiet` échoue), `git commit -m "AIOS : installation du vault"` (ou `"AIOS : mise à jour du profil"` lors d'une relance).
-   - Propose de créer une sauvegarde sur GitHub dans un dépôt **privé**. Seulement après un « oui » explicite : vérifie `gh auth status`, puis
-     ```bash
-     gh repo create <nom-choisi> --private --source . --remote origin --push
-     ```
-     Si `gh` n'est pas connecté, explique comment faire (`gh auth login`, puis `gh auth setup-git`) et arrête cette étape.
+   - Propose une sauvegarde en ligne sur GitHub, dans un dépôt **privé**. Seulement après un « oui » explicite, vérifie `gh auth status` :
+     - **GitHub est connecté** :
+       ```bash
+       gh repo create <nom-choisi> --private --source . --remote origin --push
+       ```
+     - **`gh` est absent ou pas connecté** : ne fais taper aucune commande à l'utilisateur, et ne l'envoie pas dans un terminal. Dis-lui : « La sauvegarde en ligne demande une connexion à GitHub qu'on fera plus tard, avec de l'aide si besoin. En attendant, la sauvegarde locale continue : chaque modification est enregistrée sur ton ordinateur. » Puis passe à l'étape suivante.
 
 8. **Obsidian.** Explique que le dossier peut s'ouvrir dans Obsidian (« Ouvrir un dossier comme coffre ») pour lire et naviguer.
 
