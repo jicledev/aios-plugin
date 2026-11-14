@@ -1,6 +1,6 @@
 # Installer l'AIOS — procédure pour l'assistant
 
-Ce document s'adresse à l'assistant IA (Claude Code, et plus tard d'autres) à qui l'utilisateur a demandé d'installer l'AIOS. Si tu es un humain, lis plutôt le [README](README.md).
+Ce document s'adresse à l'assistant IA (Claude Code ou Codex) à qui l'utilisateur a demandé d'installer l'AIOS. Si tu es un humain, lis plutôt le [README](README.md).
 
 Tu installes l'AIOS pour une personne qui n'est peut-être pas technique. Règles de conduite pendant toute la procédure :
 
@@ -12,16 +12,16 @@ Tu installes l'AIOS pour une personne qui n'est peut-être pas technique. Règle
 
 ## Avant de commencer
 
-1. **Présente l'AIOS** en deux phrases : « L'AIOS transforme ce dossier en mémoire pour Claude : qui tu es, tes projets, tes règles. Rien n'est envoyé, publié ou supprimé sans ton accord, et tout est sauvegardé automatiquement. »
+1. **Présente l'AIOS** en deux phrases : « L'AIOS transforme ce dossier en mémoire pour ton assistant (Claude ou Codex) : qui tu es, tes projets, tes règles. Rien n'est envoyé, publié ou supprimé sans ton accord, et tout est sauvegardé automatiquement. »
 
 2. **Examine le dossier de la session** (le dossier courant).
-   - **Il contient un fichier `.aios-vault`** : l'AIOS est déjà installé ici. Dis-le, puis passe à la section « Mettre à jour l'AIOS ».
+   - **Il contient un fichier `.aios-vault`** : l'AIOS est déjà installé ici. Dis-le. Si tu es Codex, va directement à la section « Codex » (elle traite ce cas) ; sinon, passe à la section « Mettre à jour l'AIOS ».
    - **Il est vide** (ou ne contient que des fichiers cachés de configuration) : continue.
-   - **Il contient d'autres fichiers** : dis ce que tu vois en une phrase, puis explique que l'AIOS a besoin d'un dossier dédié et ne transforme pas un dossier déjà utilisé. Propose à l'utilisateur de créer un dossier vide, par exemple `AIOS` dans ses Documents, d'ouvrir une nouvelle session Claude Code sur ce dossier, puis de recoller la même phrase. Arrête-toi là.
+   - **Il contient d'autres fichiers** : dis ce que tu vois en une phrase, puis explique que l'AIOS a besoin d'un dossier dédié et ne transforme pas un dossier déjà utilisé. Propose à l'utilisateur de créer un dossier vide, par exemple `AIOS` dans ses Documents, d'ouvrir une nouvelle session (Claude Code) ou conversation (Codex) sur ce dossier, puis de recoller la même phrase. Arrête-toi là.
 
-3. **Vérifie Git**, l'outil qui sert à la sauvegarde et au garde-fou. Lance `git --version`.
+3. **Vérifie Git** (aussi dans Codex, avant sa section), l'outil qui sert à la sauvegarde et au garde-fou. Lance `git --version`.
    - **La commande répond** : continue.
-   - **Elle échoue** : explique que l'AIOS a besoin d'un petit outil gratuit, Git for Windows. L'utilisateur l'installe depuis https://git-scm.com/download/win en gardant les options par défaut, ferme complètement Claude Code, le rouvre sur ce dossier et recolle la même phrase. Arrête-toi là.
+   - **Elle échoue** : explique que l'AIOS a besoin d'un petit outil gratuit, Git for Windows. L'utilisateur l'installe depuis https://git-scm.com/download/win en gardant les options par défaut, ferme complètement son app (Claude ou ChatGPT/Codex), la rouvre sur ce dossier et recolle la même phrase. Arrête-toi là.
 
 ## Claude Code
 
@@ -67,4 +67,16 @@ Tu installes l'AIOS pour une personne qui n'est peut-être pas technique. Règle
 
 ## Codex
 
-Pas encore pris en charge.
+Si tu es Codex (l'app ChatGPT « Powered by Codex »), suis cette section à la place de « Claude Code ». L'app n'a pas de commande pour installer un plugin : c'est l'utilisateur qui clique, et tu le guides **une étape à la fois**, en attendant sa réponse avant la suivante. Les commandes de l'AIOS s'écrivent `$aios:…` dans Codex.
+
+1. **Ajoute la source.** « Ouvre l'onglet **Plugins** de l'app, ajoute une source de plugins (marketplace) et saisis : `jicledev/aios-plugin`. »
+2. **Installe le moteur.** « Le plugin **aios** apparaît, avec ses recettes : clique sur **Installer le plug-in**. » S'il est déjà installé, passe à l'étape suivante.
+3. **Approuve les protections.** « L'app te demande d'approuver deux hooks de l'AIOS (ou une icône d'ancre avec un point jaune apparaît en bas de la zone de message) : approuve-les. » Explique en une phrase : ce sont le garde-fou (rien n'est envoyé ni supprimé sans toi) et la sauvegarde automatique ; sans cette approbation, ils ne tournent pas.
+4. **Ouvre une nouvelle conversation** sur ce dossier (le projet du vault) : le moteur ne sert qu'à partir de là.
+5. **Lance l'installation du vault.** Dans cette nouvelle conversation, l'utilisateur tape `$aios:demarrer`. Explique ce qui va suivre : quelques questions, puis le vault est prêt (15 à 20 minutes).
+
+**Le dossier contient déjà `.aios-vault`** (vault installé avec Claude, ouvert pour la première fois dans Codex) : fais seulement les étapes 1 à 4, puis `$aios:demarrer`, qui reconnaîtra le vault et n'ajoutera que la partie Codex (protections et, au choix, le brief du matin). Rien de son contenu ne change.
+
+**Une limite à annoncer honnêtement** : dans Codex, le garde-fou ne peut pas demander l'accord de l'utilisateur, il bloque donc toute action sensible (envoyer, publier, supprimer), même confirmée. Codex peut préparer des brouillons ; l'envoi se fait dans l'app concernée ou depuis Claude.
+
+**Après chaque mise à jour** du moteur dans Codex, l'icône d'ancre jaune revient : il faut réapprouver les hooks, sinon la sauvegarde et le garde-fou s'arrêtent sans prévenir.

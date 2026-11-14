@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Hook PreToolUse AIOS : exige une validation pour toute action sensible d'un
 # connecteur (outils mcp__…) : envoi, publication, programmation, suppression…
-# Ne s'applique que dans un vault AIOS. En mode automatique, l'action est refusée.
+# Ne s'applique que dans un vault AIOS. En mode automatique, et toujours dans Codex, l'action est refusée.
 # Rapide : la vérification du verbe se fait en bash pur avant toute autre chose.
 ICI="${BASH_SOURCE[0]%/*}"
 . "$ICI/lib.sh"
@@ -52,7 +52,14 @@ cwd="$JSON_VAL"
 trouver_vault "${cwd:-.}" >/dev/null || trouver_vault "$PWD" >/dev/null || exit 0
 
 json_extraire "$entree" permission_mode
+# Codex ne sait pas « demander » depuis un hook (un ask est ignoré et l'action part) :
+# on y refuse toute action sensible, l'utilisateur la fait lui-même.
+if [ -n "${CODEX_SHELL:-}" ] || [ "${AIOS_MOTEUR:-}" = "codex" ]; then JSON_VAL="codex"; fi
 case "$JSON_VAL" in
+  codex)
+    decision="deny"
+    raison="AIOS : action sensible ($VERBE) bloquée dans Codex — fais-la toi-même (par exemple directement dans l'app concernée) ou depuis Claude."
+    ;;
   default|acceptEdits|plan|"")
     decision="ask"
     raison="AIOS : action sensible ($VERBE) — validation requise."

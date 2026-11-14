@@ -31,6 +31,13 @@ Ce que tu obtiens :
 
 > **Tu utilises Claude Code dans un terminal plutôt que dans l'app ?** Crée le dossier de la même façon, ouvre un terminal dans ce dossier, tape `claude`, puis colle la même phrase.
 
+> **Tu utilises Codex (l'app ChatGPT) ?** Le même vault marche aussi dans Codex, même si tu l'as installé avec Claude.
+> 1. Dans l'app, ouvre l'onglet **Plugins**, ajoute la source `jicledev/aios-plugin`, puis installe **aios**.
+> 2. L'app te demande d'approuver deux protections de l'AIOS (une icône d'**ancre** avec un point jaune) : approuve-les. Ce sont le garde-fou et la sauvegarde automatique.
+> 3. Ouvre une nouvelle conversation sur le dossier de ton vault et tape `$aios:demarrer`.
+>
+> Dans Codex, les commandes s'écrivent `$aios:…` au lieu de `/aios:…`. Par sécurité, Codex ne peut rien envoyer, publier ni supprimer à ta place : il prépare un brouillon, et tu l'envoies toi-même. **Après chaque mise à jour**, l'ancre jaune revient : réapprouve ces deux protections.
+
 ## Ce qui se passe pendant l'installation
 
 Claude vérifie que le dossier est vide et que l'outil de sauvegarde (Git) est présent. Il installe ensuite le moteur de l'AIOS, te fait recharger la session, puis te pose ses questions. Il ne touche à rien en dehors de ce dossier.

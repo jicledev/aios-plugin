@@ -8,9 +8,15 @@ argument-hint: "(aucun)"
 
 Tu mets à jour le moteur de l'AIOS : les commandes, le garde-fou et la sauvegarde. Le vault de l'utilisateur (ses notes, son `AGENTS.md`, ses fiches) n'est pas concerné. L'utilisateur n'est peut-être pas technique : parle simplement, sans jargon (pas de « plugin », « marketplace » ou « CLI », sauf s'il les emploie). Dis plutôt « le moteur de l'AIOS ».
 
+Tu peux tourner dans **Claude Code** ou dans **Codex** (l'app ChatGPT). Tu es dans Codex si la variable d'environnement `CODEX_SHELL` vaut `1` ou si tes outils viennent de Codex. Suis la partie qui correspond.
+
 ## Étapes
 
-1. **Annoncer.** Dis en une phrase ce que tu vas faire. Préviens que tu vas peut-être demander une ou deux autorisations pour lancer des commandes.
+1. **Annoncer.** Dis en une phrase ce que tu vas faire.
+
+### Dans Claude Code
+
+Préviens que tu vas peut-être demander une ou deux autorisations pour lancer des commandes.
 
 2. **Choisir la voie.** Lance `claude --version`.
    - **Voie 1 : la commande répond.** Lance successivement :
@@ -29,7 +35,19 @@ Tu mets à jour le moteur de l'AIOS : les commandes, le garde-fou et la sauvegar
 
 4. **Activer la nouvelle version.** La nouvelle version ne sert qu'après un rechargement. Demande à l'utilisateur de taper lui-même `/reload-plugins` dans la zone de message, car tu ne peux pas le faire à sa place. S'il préfère, il peut aussi fermer cette session et en ouvrir une nouvelle sur le même dossier.
 
-5. **Nouveautés du vault.** Rappelle que la mise à jour ne modifie jamais son vault. Si la nouvelle version apporte des nouveautés dans la structure du vault, `/aios:demarrer` les ajoutera, après son accord.
+### Dans Codex
+
+L'app n'a pas de commande pour cela : tu guides l'utilisateur, une étape à la fois, en attendant sa réponse avant la suivante.
+
+2. **Mettre à jour.** « Ouvre l'onglet Plugins de l'app, puis le plugin **aios**. S'il propose une mise à jour, lance-la ; sinon, désinstalle-le puis réinstalle-le depuis la même source. » Demande-lui la version affichée après coup. Si elle n'a pas changé, dis : « L'AIOS est déjà à jour (version X). » et arrête-toi là.
+
+3. **Réapprouver les protections.** « Une icône d'ancre avec un point jaune apparaît en bas de la zone de message : clique dessus et réapprouve les deux hooks de l'AIOS. » Explique pourquoi en une phrase : sans cette approbation, la sauvegarde automatique et le garde-fou ne tournent plus, sans aucun message.
+
+4. **Activer la nouvelle version.** « Ouvre une nouvelle conversation sur ce dossier : la nouvelle version ne sert qu'à partir de là. »
+
+### Dans les deux cas
+
+5. **Nouveautés du vault.** Rappelle que la mise à jour ne modifie jamais son vault. Si la nouvelle version apporte des nouveautés dans la structure du vault, `/aios:demarrer` (ou `$aios:demarrer` dans Codex) les ajoutera, après son accord.
 
 ## Ce que tu ne fais jamais
 

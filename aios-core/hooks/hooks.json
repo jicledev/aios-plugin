@@ -2,11 +2,12 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": ".*",
+        "matcher": "mcp__.*",
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/garde.sh\""
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/garde.sh\"",
+            "commandWindows": "$c = @(); try { $e = & git --exec-path 2>$null; if ($e) { $c += Split-Path (Split-Path (Split-Path $e)) } } catch {}; $g = (Get-Command git -ErrorAction SilentlyContinue).Source; if ($g) { $d = Split-Path $g; $c += Split-Path $d; $c += Split-Path (Split-Path $d) }; $c += Join-Path \"$env:ProgramFiles\" 'Git'; $c += Join-Path \"$env:LOCALAPPDATA\" 'Programs\\Git'; $b = $c | Where-Object { $_ } | ForEach-Object { Join-Path $_ 'bin\\bash.exe' } | Where-Object { Test-Path $_ } | Select-Object -First 1; if (-not $b) { exit 0 }; $env:AIOS_MOTEUR = 'codex'; & $b \"${CLAUDE_PLUGIN_ROOT}/scripts/garde.sh\"; exit $LASTEXITCODE"
           }
         ]
       }
@@ -16,7 +17,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/sauvegarde.sh\""
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/sauvegarde.sh\"",
+            "commandWindows": "$c = @(); try { $e = & git --exec-path 2>$null; if ($e) { $c += Split-Path (Split-Path (Split-Path $e)) } } catch {}; $g = (Get-Command git -ErrorAction SilentlyContinue).Source; if ($g) { $d = Split-Path $g; $c += Split-Path $d; $c += Split-Path (Split-Path $d) }; $c += Join-Path \"$env:ProgramFiles\" 'Git'; $c += Join-Path \"$env:LOCALAPPDATA\" 'Programs\\Git'; $b = $c | Where-Object { $_ } | ForEach-Object { Join-Path $_ 'bin\\bash.exe' } | Where-Object { Test-Path $_ } | Select-Object -First 1; if (-not $b) { exit 0 }; $env:AIOS_MOTEUR = 'codex'; & $b \"${CLAUDE_PLUGIN_ROOT}/scripts/sauvegarde.sh\"; exit $LASTEXITCODE"
           }
         ]
       }

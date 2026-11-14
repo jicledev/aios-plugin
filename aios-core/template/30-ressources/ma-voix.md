@@ -1,6 +1,6 @@
 # Ma voix
 
-Comment j'écris. Claude s'en sert pour tout texte rédigé en mon nom.
+Comment j'écris. L'IA (Claude, Codex…) s'en sert pour tout texte rédigé en mon nom.
 <!-- à remplir par /aios:demarrer -->
 
 ## Ton

@@ -10,6 +10,8 @@ Tu fais le point sur le vault avec l'utilisateur, en 15 minutes environ. Tu prop
 
 ## Étapes
 
+0. **La sauvegarde tourne-t-elle ?** Lance `git status --porcelain` dans le vault. S'il y a des modifications non enregistrées, regarde la date de la dernière sauvegarde (`git log -1 --format=%cs`) et la date de modification la plus récente de ces fichiers. Si des modifications attendent depuis **plus d'un jour**, commence par : « Attention : la sauvegarde automatique ne tourne plus depuis <date de la dernière sauvegarde>. Dans Codex, réapprouve les hooks (l'icône d'ancre avec un point jaune) ; dans Claude, dis-le-moi. » Puis continue le bilan : l'étape 6 enregistrera tout.
+
 1. **Vider l'inbox.** Pour chaque élément de `00-inbox/` (zones d'import comprises), propose une destination selon les règles de la skill `capture`, par groupes de 5 au plus. Applique ce qui est accepté. Ce qui est refusé reste.
 2. **Archiver.**
    - Liste les projets dont `statut` vaut `termine` ou `abandonne`.
@@ -27,9 +29,16 @@ Tu fais le point sur le vault avec l'utilisateur, en 15 minutes environ. Tu prop
    - skills ou règles modifiées ;
    - priorités de la semaine suivante.
 6. **Sauvegarder.** Lance le script de sauvegarde du plugin (`../../scripts/sauvegarde.sh`, par rapport au dossier de cette skill), avec le dossier du vault en argument :
-   ```bash
-   bash "<dossier de cette skill>/../../scripts/sauvegarde.sh" "<dossier du vault>" </dev/null
-   ```
+   - **Dans Claude Code :**
+     ```bash
+     bash "<dossier de cette skill>/../../scripts/sauvegarde.sh" "<dossier du vault>" </dev/null
+     ```
+   - **Dans Codex** (PowerShell, où `bash` désigne Linux et `</dev/null` n'existe pas), avec le Bash de Git :
+     ```powershell
+     $c = @(); $e = git --exec-path; if ($e) { $c += Split-Path (Split-Path (Split-Path $e)) }; $c += Join-Path $env:ProgramFiles 'Git'; $c += Join-Path $env:LOCALAPPDATA 'Programs\Git'
+     $b = $c | Where-Object { $_ } | ForEach-Object { Join-Path $_ 'bin\bash.exe' } | Where-Object { Test-Path $_ } | Select-Object -First 1
+     $null | & $b "<dossier de cette skill>/../../scripts/sauvegarde.sh" "<dossier du vault>"
+     ```
 7. **Conclure** en trois lignes maximum.
 
 ## Ce que tu ne fais jamais

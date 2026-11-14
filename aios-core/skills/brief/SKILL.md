@@ -17,6 +17,7 @@ Tu prépares un brief court, lisible en moins d'une minute : **les priorités du
    - Les fiches `20-domaines/*/README.md` au `statut: actif` : leurs cases non cochées, s'il y en a.
    - `AGENTS.md`, pour les objectifs et le contexte de l'utilisateur.
    - N'ouvre pas `90-archives/`.
+   - **La sauvegarde tourne-t-elle ?** Avant d'écraser `brief.md`, lis sa première ligne (« Brief du <jour> <date> » : la date du brief précédent) et la dernière ligne datée `[AAAA-MM-JJ …]` de `.git/aios-sauvegarde.log` (le journal de la sauvegarde automatique). Si le brief précédent est plus récent **d'au moins un jour** que la dernière sauvegarde, commence ta réponse par : « Attention : la sauvegarde automatique ne tourne plus depuis <date de la dernière sauvegarde>, et le garde-fou non plus. Dans Codex, réapprouve les hooks (l'icône d'ancre avec un point jaune) ; dans Claude, dis-le-moi. » Si `brief.md` existe (ce n'est pas le premier brief) mais que le journal `.git/aios-sauvegarde.log` n'existe pas, commence par : « Attention : la sauvegarde automatique et le garde-fou ne tournent pas. Dans Codex, approuve les hooks (l'icône d'ancre avec un point jaune) ; dans Claude, dis-le-moi. » Dans les autres cas (premier brief, fichier illisible), ne dis rien : le bilan s'en charge.
 
 2. **Lire l'agenda du jour**, en lecture seule.
    - Cherche, parmi les outils de la session, un outil d'agenda qui **liste ou recherche des événements**. Le nom contient en général `list_events` ou `search_events`. Il faut parfois le charger avant de l'appeler.
@@ -28,7 +29,7 @@ Tu prépares un brief court, lisible en moins d'une minute : **les priorités du
    - Trois au maximum, prises parmi les cases non cochées des projets `actif` et des domaines `actif`.
    - Ordre de préférence : les actions d'un projet en retard, puis celles d'un projet dont l'échéance tombe dans les 7 jours, puis celles qui en débloquent d'autres, puis celles qui servent les objectifs d'`AGENTS.md`. Les actions des domaines passent après les actions de projets à échéance proche.
    - Chaque priorité porte une raison d'une ligne, concrète : « échéance dans 3 jours », « le projet est en retard », « débloque la suite », « objectif du trimestre ».
-   - S'il n'y a aucune action non cochée, écris : « Aucune action notée dans tes projets. Ajoute-en une avec `/aios:capture`. »
+   - S'il n'y a aucune action non cochée, écris : « Aucune action notée dans tes projets. Ajoute-en une avec `/aios:capture` (ou `$aios:capture` dans Codex). »
 
 4. **Établir les projets en retard.**
    - **En retard** : un projet au statut `actif` ou `en-pause` dont l'échéance est strictement antérieure à aujourd'hui. Indique depuis combien de jours.

@@ -59,7 +59,7 @@ Les en-têtes des fiches suivent les schémas du plugin AIOS (`schemas/projet.md
 ## Sécurité
 
 - **Jamais** de mots de passe, clés API, codes ou données bancaires dans le vault. Si j'en colle un, me prévenir et ne pas l'enregistrer.
-- Tout ce que Claude lit est envoyé au fournisseur du modèle : les informations très sensibles restent dans `prive-local/` (non sauvegardé) ou hors du vault.
+- Tout ce que l'IA lit (Claude, Codex…) est envoyé au fournisseur du modèle : les informations très sensibles restent dans `prive-local/` (non sauvegardé) ou hors du vault.
 - **Rien n'est envoyé, publié, programmé ou supprimé à l'extérieur sans ma validation explicite**, à chaque fois. Les brouillons sont libres.
 
 ## Corrections
