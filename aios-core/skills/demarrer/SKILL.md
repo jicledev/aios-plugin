@@ -23,7 +23,7 @@ $b = $c | Where-Object { $_ } | ForEach-Object { Join-Path $_ 'bin\bash.exe' } |
    - Le vault est **toujours** le dossier de la session (le dossier courant). Les protections et la sauvegarde automatique ne fonctionnent que dans une session ouverte *dans* le vault.
    - Si l'utilisateur veut son vault ailleurs (il cite un autre dossier, ou le dossier courant est un projet de code, un dépôt existant, son dossier personnel…), ne pose rien. Explique simplement : « Pour que l'AIOS fonctionne, il faut rouvrir une session (Claude Code) ou une conversation (Codex) dans le dossier du vault, puis relancer `/aios:demarrer` (ou `$aios:demarrer` dans Codex). » Propose de créer le dossier vide s'il n'existe pas, puis arrête-toi là.
    - **Dans Codex**, vérifie aussi Git : lance `git --version`. S'il manque, explique que l'AIOS a besoin d'un petit outil gratuit, Git for Windows (https://git-scm.com/download/win, options par défaut), puis de fermer et rouvrir l'app et de relancer `$aios:demarrer`. Arrête-toi là.
-   - Si le dossier courant contient déjà `.aios-vault`, c'est une mise à jour : l'étape 2 ajoutera seulement ce qui manque, puis à l'étape 3 ne demande que ce qui a changé. Un vault installé avec Claude et ouvert pour la première fois dans Codex (ou l'inverse) est aussi une mise à jour : seules les étapes 6, 7 et 9 ont du nouveau à proposer. Après une mise à jour du moteur de l'AIOS, l'étape 6 (Documents) peut aussi être nouvelle.
+   - Si le dossier courant contient déjà `.aios-vault`, c'est une mise à jour : l'étape 2 ajoutera seulement ce qui manque, l'étape 2 bis proposera les règles nouvelles d'`AGENTS.md`, puis à l'étape 3 ne demande que ce qui a changé. Un vault installé avec Claude et ouvert pour la première fois dans Codex (ou l'inverse) est aussi une mise à jour : seules les étapes 6, 7 et 9 ont du nouveau à proposer. Après une mise à jour du moteur de l'AIOS, l'étape 6 (Documents) peut aussi être nouvelle.
    - S'il est vide, continue.
    - S'il contient d'autres fichiers sans `.aios-vault`, dis ce que tu vois et demande confirmation avant de continuer (rien ne sera écrasé, mais le dossier deviendra un vault).
 
@@ -35,6 +35,17 @@ $b = $c | Where-Object { $_ } | ForEach-Object { Join-Path $_ 'bin\bash.exe' } |
    - **Dans Codex :** avec le Bash de Git, comme expliqué plus haut : `& $b "<dossier de cette skill>/../../scripts/poser-structure.sh" "<dossier courant>"`.
 
    Il ne remplace jamais un fichier existant. Résume en une phrase ce qui a été créé.
+
+2 bis. **Mettre à niveau les règles**, seulement pour un vault déjà installé (le fichier `.aios-vault` existait avant l'étape 2). Les règles génériques d'`AGENTS.md` évoluent avec le moteur, mais l'`AGENTS.md` du vault n'est jamais réécrit d'office : tu proposes, l'utilisateur décide.
+   1. Lis la ligne `regles:` de `.aios-vault` et la version du moteur (`../../.claude-plugin/plugin.json`, par rapport au dossier de cette skill). Si `regles:` vaut déjà la version du moteur, passe cette étape sans rien dire — sauf si l'utilisateur a demandé « mets à jour mon AGENTS.md » : fais-la alors quand même. Si la ligne manque, le vault date d'avant ce mécanisme : continue.
+   2. Lis le journal des règles du moteur (`../../schemas/regles-agents.md`) : tout le fichier si la ligne `regles:` manque ou si l'utilisateur a demandé la mise à jour, sinon seulement les versions postérieures à sa valeur. Lis aussi le template (`../../template/AGENTS.md`) et l'`AGENTS.md` du vault.
+   3. Relève ce qui manque au vault dans les sections génériques (« Où trouver quoi », « Sources de vérité », « Règles de rangement », « Mes recettes » pour sa phrase d'introduction, « Conventions », « Sécurité », « Corrections », « Fin de session ») :
+      - une section ou une règle du template absente du vault (une règle que le vault contient sous une autre formulation n'est pas absente : ne la propose pas) ;
+      - une phrase du vault identique à un « Ancien » du journal, à remplacer par son « Nouveau ».
+      Toute autre phrase qui diffère du template est une règle que l'utilisateur a écrite ou réécrite : n'y touche pas. En cas de doute, montre les deux versions et demande. Le journal sert à reconnaître les phrases remplacées et à expliquer chaque règle ; c'est la comparaison avec le template qui dit ce qui manque. Une règle refusée peut donc être reproposée à la version suivante : c'est voulu.
+   4. Ne touche jamais aux parties personnelles : « Qui je suis », les objectifs, « Mes domaines », « Projets actifs », les lignes de « Sources de vérité » propres à l'utilisateur, les lignes de recettes.
+   5. S'il n'y a rien à proposer, dis-le en une ligne. Sinon, montre les changements groupés par section, texte avant et après, avec une phrase sur ce que chacun apporte. L'utilisateur accepte tout, une partie, ou rien. Applique seulement ce qui est accepté.
+   6. Écris ou remplace la ligne `regles: <version du moteur>` dans `.aios-vault`, sans toucher aux autres lignes, que les changements aient été acceptés ou non. Dis que les règles refusées ne seront pas reproposées avant une prochaine version, et qu'il suffit de dire « mets à jour mon AGENTS.md » pour les revoir.
 
 3. **Interview.** Une question à la fois, en reformulant brièvement chaque réponse :
    1. Qui es-tu et quelle est ton activité ?
@@ -49,6 +60,7 @@ $b = $c | Where-Object { $_ } | ForEach-Object { Join-Path $_ 'bin\bash.exe' } |
    - Crée une fiche par domaine (`20-domaines/<nom>/README.md`) et par projet (`10-projets/<nom>/README.md`) selon les schémas du plugin (`../../schemas/domaine.md`, `../../schemas/projet.md`). En-têtes plats, noms en minuscules avec tirets. Pour un projet avec du code, remplis `code_repo`, `code_local`, `code_stack`.
    - Remplis `30-ressources/ma-voix.md` avec ce que tu as appris (ou laisse les repères si reporté).
    - Liste les domaines et projets en `[[liens]]` dans `AGENTS.md`.
+   - Pour un vault neuf, ajoute à `.aios-vault` la ligne `regles: <version du moteur>` (version lue dans `../../.claude-plugin/plugin.json`), sans toucher aux autres lignes : ses règles sont celles de cette version.
 
 5. **Contenu existant.** Demande : « As-tu du contenu existant à importer (notes, documents, pages Notion) ? » Si oui, enchaîne sur la skill `importer`.
 

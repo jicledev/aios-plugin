@@ -21,7 +21,7 @@ Ce fichier est lu au début de chaque session. Il dit qui je suis, où trouver l
 | `journal/` | Un fichier par semaine (`AAAA-Sxx.md`) : décisions, corrections, bilans. |
 | Google Drive › `AIOS/` | Hors du vault : `a-lire/` (documents déposés, pas encore lus) et `documents/` (les originaux). |
 
-Pour lister les projets, lire les en-têtes des `10-projets/*/README.md` (pas d'index tenu à la main).
+La liste ci-dessous est un raccourci : en cas de doute, les en-têtes des `10-projets/*/README.md` font foi.
 
 **Mes domaines :**
 <!-- à remplir par /aios:demarrer : liste en [[liens]] -->
@@ -31,6 +31,7 @@ Pour lister les projets, lire les en-têtes des `10-projets/*/README.md` (pas d'
 
 ## Sources de vérité
 
+- **Cherche d'abord, réponds ensuite.** Quand je pose une question sur mes projets, mes prix, mes dates ou mes décisions, cherche dans le vault (par mots-clés, puis en lisant la fiche) avant de répondre. Ne réponds pas de mémoire. Si le vault ne dit rien, dis-le. Cette règle vaut pour mes questions, pas pour le déroulé d'une commande ou d'une recette.
 - **Ce vault est la source de vérité** de mon contexte : projets, décisions, règles, style.
 - Les outils externes (email, agenda, Notion, etc.) sont des **accès**, pas des mémoires. Ne pas recopier leurs données dans le vault, sauf une décision ou un fait utile à garder.
 - **Documents** (PDF, Word, images) : les originaux vivent dans Google Drive (`AIOS/documents/`), leurs fiches de lecture dans le vault. Format des fiches : `schemas/document.md` du plugin AIOS.
@@ -79,3 +80,7 @@ Quand je te corrige sur une façon de faire (pas une simple faute de frappe), aj
 `- AAAA-MM-JJ — <skill ou recette concernée, ou "général"> — <la correction en une phrase>`
 
 Le bilan hebdomadaire s'en sert pour améliorer mes réglages, mes recettes et ce fichier.
+
+## Fin de session
+
+Quand je dis que j'ai fini (« c'est bon pour aujourd'hui », « on s'arrête là »), ou à la fin d'un long travail, regarde si la conversation contient des décisions ou des actions qui ne sont pas encore dans le vault. S'il y en a, liste-les en une ligne chacune et propose de les ranger. Range-les seulement après mon accord. S'il n'y en a pas, ne dis rien. Inutile après un bilan de la semaine, qui pose déjà la question.

@@ -37,7 +37,7 @@ Tu fais un point clair et court sur un projet, en croisant sa fiche dans le vaul
    - ce qui a bougé récemment (commits, PR) ;
    - ce qui bloque ou traîne ;
    - les prochaines actions suggérées.
-7. **Proposer la mise à jour** de `## Prochaines actions` et, si besoin, de `statut`. Applique seulement après accord.
+7. **Proposer la mise à jour** de `## Prochaines actions` et, si besoin, de `statut`. Applique seulement après accord. Quand le `statut` change, mets aussi à jour la liste « Projets actifs » d'`AGENTS.md` : retire le projet s'il n'est plus `actif`, ajoute-le s'il le devient, et dis-le dans ta confirmation. Si la liste n'existe pas dans `AGENTS.md`, ne touche pas à `AGENTS.md` : le statut de la fiche change quand même.
 
 ## Ce que tu ne fais jamais
 
