@@ -8,7 +8,7 @@ Ce que tu obtiens :
 - un **brief du matin**, chaque jour de semaine à 8 h, avec tes priorités, tes rendez-vous et tes projets en retard (`/aios:brief` pour l'avoir à tout moment), et un rappel du bilan le dimanche ;
 - la **lecture de tes documents** (PDF, Word, images) : dépose-les dans le dossier `AIOS/a-lire` de ton Google Drive, même depuis ton téléphone, puis `/aios:lire` en fait des fiches de lecture rangées dans ton vault, en gardant les originaux dans Drive ;
 - tes **recettes** : explique une fois une tâche qui revient, `/aios:creer-recette` en garde la marche à suivre dans ton vault ; et tes **réglages** : quand tu corriges plusieurs fois la même chose, le bilan propose de le retenir, et ça survit aux mises à jour ;
-- un **garde-fou** : rien n'est envoyé, publié ou supprimé sans ton accord ;
+- un **garde-fou** : rien n'est envoyé, publié, supprimé ou modifié sans ton accord ;
 - une **sauvegarde automatique** de ton vault.
 
 ## Ce qu'il te faut
@@ -38,7 +38,7 @@ Ce que tu obtiens :
 > 2. L'app te demande d'approuver deux protections de l'AIOS (une icône d'**ancre** avec un point jaune) : approuve-les. Ce sont le garde-fou et la sauvegarde automatique.
 > 3. Ouvre une nouvelle conversation sur le dossier de ton vault et tape `$aios:demarrer`.
 >
-> Dans Codex, les commandes s'écrivent `$aios:…` au lieu de `/aios:…`. Par sécurité, Codex ne peut rien envoyer, publier ni supprimer à ta place : il prépare un brouillon, et tu l'envoies toi-même. **Après chaque mise à jour**, l'ancre jaune revient : réapprouve ces deux protections.
+> Dans Codex, les commandes s'écrivent `$aios:…` au lieu de `/aios:…`. Par sécurité, Codex ne peut rien envoyer, publier, supprimer ni modifier à ta place : il crée, ou prépare un brouillon, et tu l'envoies toi-même. **Après chaque mise à jour**, l'ancre jaune revient : réapprouve ces deux protections.
 
 ## Ce qui se passe pendant l'installation
 

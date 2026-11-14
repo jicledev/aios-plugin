@@ -13,7 +13,7 @@ En-tête YAML **plat** :
 
 Corps, dans cet ordre : un titre `# <Titre de la recette>`, puis `## Objectif` (le résultat attendu, en deux lignes), `## Règles` (exigences de qualité, priorités), `## Étapes` (numérotées), `## Ce que tu ne fais jamais`.
 
-Une recette ne passe jamais au-dessus de la section « Sécurité » d'`AGENTS.md` : rien n'est envoyé, publié ou supprimé sans validation.
+Une recette ne passe jamais au-dessus de la section « Sécurité » d'`AGENTS.md` : rien n'est envoyé, publié, supprimé ou modifié sans validation.
 
 **Noms réservés.** Une recette ne peut pas porter le nom d'une commande de l'AIOS : `bilan`, `brief`, `capture`, `creer-recette`, `demarrer`, `etat-projet`, `importer`, `lire`, `mettre-a-jour`.
 

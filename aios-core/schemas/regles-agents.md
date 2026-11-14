@@ -7,6 +7,16 @@ Ce fichier est lu par la commande `demarrer` quand elle est relancée sur un vau
 
 Les versions sont listées de la plus récente à la plus ancienne.
 
+## 0.8.0
+
+**Règles ajoutées**
+- Aucune.
+
+**Phrases remplacées**
+- Ancien : `**Rien n'est envoyé, publié, programmé ou supprimé à l'extérieur sans ma validation explicite**, à chaque fois. Les brouillons sont libres.`
+  Nouveau : `**Rien n'est envoyé, publié, programmé, supprimé ou modifié à l'extérieur sans ma validation explicite**, à chaque fois. Créer un brouillon ou une nouvelle page reste libre.`
+  Note : le garde-fou retient désormais aussi les modifications d'une donnée existante hors du vault.
+
 ## 0.7.0
 
 **Règles ajoutées**

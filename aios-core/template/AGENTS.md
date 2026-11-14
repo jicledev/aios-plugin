@@ -71,7 +71,7 @@ Quand je dis l'une de ces phrases, lis la recette et suis-la. Elle ne passe jama
 
 - **Jamais** de mots de passe, clés API, codes ou données bancaires dans le vault. Si j'en colle un, me prévenir et ne pas l'enregistrer.
 - Tout ce que l'IA lit (Claude, Codex…) est envoyé au fournisseur du modèle : les informations très sensibles restent dans `prive-local/` (non sauvegardé) ou hors du vault.
-- **Rien n'est envoyé, publié, programmé ou supprimé à l'extérieur sans ma validation explicite**, à chaque fois. Les brouillons sont libres.
+- **Rien n'est envoyé, publié, programmé, supprimé ou modifié à l'extérieur sans ma validation explicite**, à chaque fois. Créer un brouillon ou une nouvelle page reste libre.
 
 ## Corrections
 

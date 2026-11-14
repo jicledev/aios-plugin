@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Hook PreToolUse AIOS : exige une validation pour toute action sensible d'un
 # connecteur (outils mcp__…) : envoi, publication, programmation, suppression…
+# et pour toute modification d'une donnée existante (update, edit, move…).
+# Créer reste libre ; un brouillon reste libre, même modifié ; une lecture aussi ;
+# les outils de l'app Claude sur elle-même (serveur ccd_…) ne sont pas des modifications.
 # Ne s'applique que dans un vault AIOS. En mode automatique, et toujours dans Codex, l'action est refusée.
 # Rapide : la vérification du verbe se fait en bash pur avant toute autre chose.
 ICI="${BASH_SOURCE[0]%/*}"
@@ -9,11 +12,18 @@ ICI="${BASH_SOURCE[0]%/*}"
 VERBES_SENSIBLES=" send forward reply respond post publish unpublish schedule delete trash remove cancel merge unsubscribe "
 # Repli : ces mots détectés même collés à d'autres (ex. "sendemail").
 SOUS_CHAINES="send publish delete trash schedule"
+# Modifications de l'existant : mots entiers seulement (un repli retiendrait get_updates).
+VERBES_MODIFICATION=" update edit modify replace overwrite patch move rename archive unarchive restore convert write upsert put revert reset clear "
+# Si l'un de ces mots vient avant tout verbe de modification, l'outil est une lecture :
+# les mots de modification qui suivent sont des noms (notion-get-suggested-edit).
+# « find » n'y est pas : find_and_replace modifie.
+VERBES_LECTURE=" get list search read fetch query view count describe export download "
 
-# verbe_sensible <nom-outil> : met le premier verbe sensible dans VERBE, ou "".
+# verbe_sensible <nom-outil> : met le premier verbe gardé dans VERBE, ou "".
+# GENRE vaut "action sensible" ou "modification".
 verbe_sensible() {
   local nom="${1##*__}" sep="" i c prec="" j s
-  VERBE=""
+  VERBE=""; GENRE="action sensible"
   # Séparer camelCase (minuscule/chiffre suivi d'une majuscule)
   for ((i = 0; i < ${#nom}; i++)); do
     c="${nom:i:1}"
@@ -32,6 +42,20 @@ verbe_sensible() {
   for s in $SOUS_CHAINES; do
     if [[ "$sep" == *"$s"* ]]; then VERBE="$s"; return; fi
   done
+  # Aucun verbe sensible : chercher une modification, sauf brouillon ou lecture.
+  [ "${#mots[@]}" -gt 0 ] || return
+  local compose=0 avant=""
+  for j in "${mots[@]}"; do
+    # Un nom composé (search_and_replace, get_or_update) n'est pas une simple lecture.
+    case "$j" in and|or|then) compose=1 ;; esac
+    # Brouillon : libre, sauf « to draft » (remettre en brouillon dépublie).
+    if { [ "$j" = "draft" ] || [ "$j" = "drafts" ]; } && [ "$avant" != "to" ]; then return; fi
+    avant="$j"
+  done
+  for j in "${mots[@]}"; do
+    if [ "$compose" -eq 0 ] && [[ "$VERBES_LECTURE" == *" $j "* ]]; then return; fi
+    if [[ "$VERBES_MODIFICATION" == *" $j "* ]]; then VERBE="$j"; GENRE="modification"; return; fi
+  done
 }
 
 IFS= read -r -d '' entree
@@ -46,6 +70,11 @@ case "$outil" in
 esac
 verbe_sensible "$outil"
 [ -n "$VERBE" ] || exit 0
+# L'app Claude qui agit sur elle-même (sa liste de tâches, sa barre latérale, ses sessions)
+# ne modifie pas une donnée de l'utilisateur. Ses actions sensibles (envoi, suppression) restent gardées.
+if [ "$GENRE" = "modification" ]; then
+  case "$outil" in mcp__ccd_*__*) exit 0 ;; esac
+fi
 
 json_extraire "$entree" cwd
 cwd="$JSON_VAL"
@@ -58,15 +87,15 @@ if [ -n "${CODEX_SHELL:-}" ] || [ "${AIOS_MOTEUR:-}" = "codex" ]; then JSON_VAL=
 case "$JSON_VAL" in
   codex)
     decision="deny"
-    raison="AIOS : action sensible ($VERBE) bloquée dans Codex — fais-la toi-même (par exemple directement dans l'app concernée) ou depuis Claude."
+    raison="AIOS : $GENRE ($VERBE) bloquée dans Codex — fais-la toi-même (par exemple directement dans l'app concernée) ou depuis Claude."
     ;;
   default|acceptEdits|plan|"")
     decision="ask"
-    raison="AIOS : action sensible ($VERBE) — validation requise."
+    raison="AIOS : $GENRE ($VERBE) — validation requise."
     ;;
   *)
     decision="deny"
-    raison="AIOS : action sensible ($VERBE) bloquée en mode automatique — fais-la toi-même ou repasse en mode normal."
+    raison="AIOS : $GENRE ($VERBE) bloquée en mode automatique — fais-la toi-même ou repasse en mode normal."
     ;;
 esac
 

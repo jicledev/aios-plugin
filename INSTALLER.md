@@ -12,7 +12,7 @@ Tu installes l'AIOS pour une personne qui n'est peut-être pas technique. Règle
 
 ## Avant de commencer
 
-1. **Présente l'AIOS** en deux phrases : « L'AIOS transforme ce dossier en mémoire pour ton assistant (Claude ou Codex) : qui tu es, tes projets, tes règles. Rien n'est envoyé, publié ou supprimé sans ton accord, et tout est sauvegardé automatiquement. »
+1. **Présente l'AIOS** en deux phrases : « L'AIOS transforme ce dossier en mémoire pour ton assistant (Claude ou Codex) : qui tu es, tes projets, tes règles. Rien n'est envoyé, publié, supprimé ou modifié sans ton accord, et tout est sauvegardé automatiquement. »
 
 2. **Examine le dossier de la session** (le dossier courant).
    - **Il contient un fichier `.aios-vault`** : l'AIOS est déjà installé ici. Dis-le. Si tu es Codex, va directement à la section « Codex » (elle traite ce cas) ; sinon, passe à la section « Mettre à jour l'AIOS ».
@@ -81,6 +81,6 @@ Si tu es Codex (l'app ChatGPT « Powered by Codex »), suis cette section à la 
 
 **Le dossier contient déjà `.aios-vault`** (vault installé avec Claude, ouvert pour la première fois dans Codex) : fais seulement les étapes 1 à 4, puis `$aios:demarrer`, qui reconnaîtra le vault et n'ajoutera que la partie Codex (protections et, au choix, le brief du matin). Rien de son contenu ne change.
 
-**Une limite à annoncer honnêtement** : dans Codex, le garde-fou ne peut pas demander l'accord de l'utilisateur, il bloque donc toute action sensible (envoyer, publier, supprimer), même confirmée. Codex peut préparer des brouillons ; l'envoi se fait dans l'app concernée ou depuis Claude.
+**Une limite à annoncer honnêtement** : dans Codex, le garde-fou ne peut pas demander l'accord de l'utilisateur, il bloque donc toute action sensible (envoyer, publier, supprimer, modifier ce qui existe), même confirmée. Codex peut préparer des brouillons ; l'envoi se fait dans l'app concernée ou depuis Claude.
 
 **Après chaque mise à jour** du moteur dans Codex, l'icône d'ancre jaune revient : il faut réapprouver les hooks, sinon la sauvegarde et le garde-fou s'arrêtent sans prévenir.
