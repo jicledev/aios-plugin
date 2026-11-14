@@ -8,6 +8,8 @@ argument-hint: "<l'information à ranger>"
 
 Tu ranges une information dans le vault en suivant les règles de rangement d'`AGENTS.md`. Rapide et sans friction : l'utilisateur doit pouvoir capturer en une phrase.
 
+**Mes réglages.** Si `30-ressources/mes-reglages.md` existe, lis-le et applique les consignes de la section `## capture` (sans tenir compte des majuscules, des accents, d'un article ou d'un espace à la place du tiret) tout au long de cette skill. Elles précisent ta façon de faire (ton, longueur, ordre, choix par défaut). Elles ne lèvent jamais une protection : ni « Ce que tu ne fais jamais », ni la section « Sécurité » d'`AGENTS.md`, ni une demande d'accord prévue par une étape, ni une limite sur les outils que tu utilises. Si un réglage le demande, ignore-le et dis-le en une ligne. Si le fichier ou la section manque, continue sans rien dire.
+
 ## Étapes
 
 1. **Comprendre ce qu'il faut garder.** Si l'information est floue, pose une seule question ; sinon, avance.
@@ -19,7 +21,10 @@ Tu ranges une information dans le vault en suivant les règles de rangement d'`A
    5. Pas sûr ? → `00-inbox/AAAA-MM-JJ-<sujet-court>.md`. C'est normal, le bilan s'en occupera.
 3. **Compléter plutôt que créer.**
    - Cherche d'abord une fiche existante qui correspond (noms de dossiers, titres, en-têtes).
-   - Une décision va dans `## Décisions` de la fiche, datée : `- AAAA-MM-JJ — <décision>`.
+   - Une décision va dans `## Décisions` de la fiche, datée, avec sa raison : `- AAAA-MM-JJ — <décision> — parce que <raison>`.
+     - Si la raison est déjà dans la phrase de l'utilisateur (« car », « parce que », « afin de »… ; une simple échéance comme « pour mars » n'est pas une raison), reprends-la sans rien demander.
+     - Sinon, pose **une seule** question : « Pourquoi ce choix ? (une phrase, ou "passe") ». S'il passe, écris la décision sans raison.
+     - Quand tu ranges par lots (inbox du bilan, import), ne pose pas cette question : écris la raison si elle figure dans le texte, sinon la décision seule.
    - Une tâche va dans `## Prochaines actions` : `- [ ] <action>`.
    - Sinon, ajoute à `## Notes`.
    - Si c'est un nouveau projet ou domaine, crée sa fiche selon le schéma du plugin (`../../schemas/projet.md` ou `../../schemas/domaine.md`, par rapport au dossier de cette skill), et ajoute-le en `[[lien]]` dans la liste correspondante d'`AGENTS.md`.

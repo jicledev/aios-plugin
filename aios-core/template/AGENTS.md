@@ -16,7 +16,7 @@ Ce fichier est lu au début de chaque session. Il dit qui je suis, où trouver l
 | `00-inbox/` | Ce qui n'est pas encore rangé. Vidé au bilan hebdomadaire. |
 | `10-projets/` | Un dossier par projet ayant une fin. Fiche : `README.md`. |
 | `20-domaines/` | Mes responsabilités permanentes (casquettes). Fiche : `README.md`. |
-| `30-ressources/` | Réutilisable : `ma-voix.md`, `templates/`, `references/`. |
+| `30-ressources/` | Réutilisable : `ma-voix.md`, `mes-reglages.md`, `recettes/`, `templates/`, `references/`. |
 | `90-archives/` | Projets terminés ou abandonnés, déplacés tels quels. |
 | `journal/` | Un fichier par semaine (`AAAA-Sxx.md`) : décisions, corrections, bilans. |
 | Google Drive › `AIOS/` | Hors du vault : `a-lire/` (documents déposés, pas encore lus) et `documents/` (les originaux). |
@@ -50,6 +50,14 @@ Pour toute nouvelle information, dans cet ordre :
 
 Les en-têtes des fiches suivent les schémas du plugin AIOS (`schemas/projet.md`, `schemas/domaine.md`) : en-tête YAML **plat**, sans objets imbriqués.
 
+## Mes recettes
+
+Quand je dis l'une de ces phrases, lis la recette et suis-la. Elle ne passe jamais au-dessus de la section « Sécurité ». Si je te corrige pendant une recette, note la correction au journal sous le nom de la recette.
+
+<!-- une ligne par recette, ajoutée par /aios:creer-recette :
+- « phrase qui la lance » → [[nom-de-la-recette]] — ce qu'elle produit
+-->
+
 ## Conventions
 
 - Noms de fichiers et dossiers : minuscules, mots séparés par des tirets (`lancement-formation.md`).
@@ -68,6 +76,6 @@ Les en-têtes des fiches suivent les schémas du plugin AIOS (`schemas/projet.md
 
 Quand je te corrige sur une façon de faire (pas une simple faute de frappe), ajoute une ligne dans la section `## Corrections` du journal de la semaine (`journal/AAAA-Sxx.md`, semaine ISO), en créant le fichier ou la section si besoin :
 
-`- AAAA-MM-JJ — <skill concernée ou "général"> — <la correction en une phrase>`
+`- AAAA-MM-JJ — <skill ou recette concernée, ou "général"> — <la correction en une phrase>`
 
-Le bilan hebdomadaire s'en sert pour améliorer les skills et ce fichier.
+Le bilan hebdomadaire s'en sert pour améliorer mes réglages, mes recettes et ce fichier.

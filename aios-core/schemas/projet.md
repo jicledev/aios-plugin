@@ -15,7 +15,7 @@ L'en-tête YAML est **plat** (aucun objet imbriqué) pour rester lisible dans le
 | `code_stack` | non | liste, ex. `[react-native, supabase]` |
 | `notion` | non | URL Notion, si le projet utilise Notion |
 
-Corps : sections `## Objectif`, `## Prochaines actions`, `## Décisions` (une ligne datée par décision), `## Notes`.
+Corps : sections `## Objectif`, `## Prochaines actions`, `## Décisions` (une ligne datée par décision, avec sa raison quand elle est connue : `- AAAA-MM-JJ — <décision> — parce que <raison>`), `## Notes`.
 
 ## Exemple
 
@@ -39,7 +39,7 @@ Publier la v1 sur les stores avant mars.
 - [ ] Préparer la page de vente
 
 ## Décisions
-- 2026-11-13 — Lancement d'abord sur Android uniquement.
+- 2026-11-13 — Lancement d'abord sur Android uniquement — parce que le budget ne couvre qu'une plateforme.
 
 ## Notes
 Lié à [[produits]].

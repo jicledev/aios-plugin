@@ -125,7 +125,7 @@ $b = $c | Where-Object { $_ } | ForEach-Object { Join-Path $_ 'bin\bash.exe' } |
 
 10. **Obsidian.** Explique que le dossier peut s'ouvrir dans Obsidian (« Ouvrir un dossier comme coffre ») pour lire et naviguer.
 
-11. **Conclure** en trois lignes : ce qui est en place, les commandes utiles (`/aios:brief`, `/aios:capture`, `/aios:bilan`, `/aios:etat-projet`, `/aios:importer`, `/aios:lire` dans Claude Code ; `$aios:brief`, `$aios:capture`, `$aios:bilan`, `$aios:etat-projet`, `$aios:importer`, `$aios:lire` dans Codex), et le conseil de faire un bilan chaque semaine.
+11. **Conclure** en trois lignes : ce qui est en place, les commandes utiles (`/aios:brief`, `/aios:capture`, `/aios:bilan`, `/aios:etat-projet`, `/aios:importer`, `/aios:lire`, `/aios:creer-recette` dans Claude Code ; `$aios:brief`, `$aios:capture`, `$aios:bilan`, `$aios:etat-projet`, `$aios:importer`, `$aios:lire`, `$aios:creer-recette` dans Codex), et le conseil de faire un bilan chaque semaine.
 
 ## Ce que tu ne fais jamais
 
