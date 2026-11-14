@@ -11,6 +11,8 @@ Ce que tu obtiens :
 - un **garde-fou** : rien n'est envoyé, publié, supprimé ou modifié sans ton accord ;
 - une **sauvegarde automatique** de ton vault.
 
+Le premier jour, l'AIOS installe l'essentiel. Le brief du matin, la sauvegarde en ligne et la lecture des documents te sont proposés ensuite, un par semaine, au moment de ton bilan. Tu peux aussi en demander un quand tu veux.
+
 ## Ce qu'il te faut
 
 - Un ordinateur Windows.
@@ -29,7 +31,7 @@ Ce que tu obtiens :
 
 5. **Laisse-toi guider.** Claude va te demander deux ou trois autorisations. Il te dit avant chacune à quoi elle sert : tu peux accepter.
 6. **Si Claude te demande de taper quelque chose**, par exemple `/reload-plugins`, tape-le exactement comme indiqué.
-7. **Réponds aux questions** de Claude sur toi, tes activités et tes projets. Compte 15 à 20 minutes. À la fin, ton vault est prêt.
+7. **Réponds aux questions** de Claude sur toi, tes activités et tes projets. Compte une dizaine de minutes. À la fin, ton vault est prêt.
 
 > **Tu utilises Claude Code dans un terminal plutôt que dans l'app ?** Crée le dossier de la même façon, ouvre un terminal dans ce dossier, tape `claude`, puis colle la même phrase.
 

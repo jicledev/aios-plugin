@@ -1,6 +1,6 @@
 ---
 name: demarrer
-description: Installe et personnalise un vault AIOS. À utiliser au premier lancement dans un dossier vide, ou quand l'utilisateur dit « démarrer », « mettre à jour mon AGENTS.md », « refaire mon profil » ou « changer l'heure de mon brief ».
+description: Installe et personnalise un vault AIOS, puis active ses options à la demande. À utiliser au premier lancement dans un dossier vide, ou quand l'utilisateur dit « démarrer », « mettre à jour mon AGENTS.md », « refaire mon profil », « changer l'heure de mon brief », « active le brief », « je veux le brief du matin », « sauvegarde en ligne », « active les documents » ou « active le rappel du bilan ».
 argument-hint: "(aucun)"
 ---
 
@@ -17,13 +17,15 @@ $b = $c | Where-Object { $_ } | ForEach-Object { Join-Path $_ 'bin\bash.exe' } |
 & $b "<chemin du script>" "<arguments>"
 ```
 
+**Le premier jour, tu poses le socle, rien de plus.** Les options (importer du contenu existant, brief du matin, sauvegarde en ligne, documents) viennent ensuite : le bilan de la semaine en propose une à la fois, et l'utilisateur peut en demander une quand il veut. Si cette skill a été lancée pour activer une option dans un vault déjà installé, va directement à « À la demande ».
+
 ## Étapes
 
 1. **Vérifier le dossier.**
    - Le vault est **toujours** le dossier de la session (le dossier courant). Les protections et la sauvegarde automatique ne fonctionnent que dans une session ouverte *dans* le vault.
    - Si l'utilisateur veut son vault ailleurs (il cite un autre dossier, ou le dossier courant est un projet de code, un dépôt existant, son dossier personnel…), ne pose rien. Explique simplement : « Pour que l'AIOS fonctionne, il faut rouvrir une session (Claude Code) ou une conversation (Codex) dans le dossier du vault, puis relancer `/aios:demarrer` (ou `$aios:demarrer` dans Codex). » Propose de créer le dossier vide s'il n'existe pas, puis arrête-toi là.
    - **Dans Codex**, vérifie aussi Git : lance `git --version`. S'il manque, explique que l'AIOS a besoin d'un petit outil gratuit, Git for Windows (https://git-scm.com/download/win, options par défaut), puis de fermer et rouvrir l'app et de relancer `$aios:demarrer`. Arrête-toi là.
-   - Si le dossier courant contient déjà `.aios-vault`, c'est une mise à jour : l'étape 2 ajoutera seulement ce qui manque, l'étape 2 bis proposera les règles nouvelles d'`AGENTS.md`, puis à l'étape 3 ne demande que ce qui a changé. Un vault installé avec Claude et ouvert pour la première fois dans Codex (ou l'inverse) est aussi une mise à jour : seules les étapes 6, 7 et 9 ont du nouveau à proposer. Après une mise à jour du moteur de l'AIOS, l'étape 6 (Documents) peut aussi être nouvelle.
+   - Si le dossier courant contient déjà `.aios-vault`, c'est une mise à jour : l'étape 2 ajoutera seulement ce qui manque, l'étape 2 bis proposera les règles nouvelles d'`AGENTS.md`, puis à l'étape 3 ne demande que ce qui a changé. Un vault installé avec Claude et ouvert pour la première fois dans Codex (ou l'inverse) est aussi une mise à jour : seules les étapes 5, 7 et 8 ont du nouveau à proposer.
    - S'il est vide, continue.
    - S'il contient d'autres fichiers sans `.aios-vault`, dis ce que tu vois et demande confirmation avant de continuer (rien ne sera écrasé, mais le dossier deviendra un vault).
 
@@ -35,6 +37,8 @@ $b = $c | Where-Object { $_ } | ForEach-Object { Join-Path $_ 'bin\bash.exe' } |
    - **Dans Codex :** avec le Bash de Git, comme expliqué plus haut : `& $b "<dossier de cette skill>/../../scripts/poser-structure.sh" "<dossier courant>"`.
 
    Il ne remplace jamais un fichier existant. Résume en une phrase ce qui a été créé.
+
+   Si `.aios-vault` n'existait pas avant cette étape (vault neuf), ajoute-lui aussitôt la ligne `installe: <version du moteur>` (version lue dans `../../.claude-plugin/plugin.json`, par rapport au dossier de cette skill), sans toucher aux autres lignes. Elle distingue un vault neuf d'un vault installé avant la version 0.9.0.
 
 2 bis. **Mettre à niveau les règles**, seulement pour un vault déjà installé (le fichier `.aios-vault` existait avant l'étape 2). Les règles génériques d'`AGENTS.md` évoluent avec le moteur, mais l'`AGENTS.md` du vault n'est jamais réécrit d'office : tu proposes, l'utilisateur décide.
    1. Lis la ligne `regles:` de `.aios-vault` et la version du moteur (`../../.claude-plugin/plugin.json`, par rapport au dossier de cette skill). Si `regles:` vaut déjà la version du moteur, passe cette étape sans rien dire — sauf si l'utilisateur a demandé « mets à jour mon AGENTS.md » : fais-la alors quand même. Si la ligne manque, le vault date d'avant ce mécanisme : continue.
@@ -62,30 +66,7 @@ $b = $c | Where-Object { $_ } | ForEach-Object { Join-Path $_ 'bin\bash.exe' } |
    - Liste les domaines et projets en `[[liens]]` dans `AGENTS.md`.
    - Pour un vault neuf, ajoute à `.aios-vault` la ligne `regles: <version du moteur>` (version lue dans `../../.claude-plugin/plugin.json`), sans toucher aux autres lignes : ses règles sont celles de cette version.
 
-5. **Contenu existant.** Demande : « As-tu du contenu existant à importer (notes, documents, pages Notion) ? » Si oui, enchaîne sur la skill `importer`.
-
-6. **Documents.** Cette étape permet à l'utilisateur de déposer des PDF, des fichiers Word ou des images, que `/aios:lire` (`$aios:lire`) transforme en fiches de lecture.
-   1. **L'outil `uv`, à chaque relance.** Lance `uv --version`, même si les documents sont déjà réglés. S'il manque, annonce : « Pour lire tes documents, j'installe un petit outil gratuit (uv), qui fait tourner les programmes de lecture de l'AIOS. Windows va te demander de l'autoriser. » Puis lance :
-      ```
-      winget install --id astral-sh.uv -e
-      ```
-      et vérifie avec `uv --version`. Juste après l'installation, la commande reste souvent introuvable dans la session en cours : essaie alors le chemin complet `"$env:LOCALAPPDATA\Microsoft\WinGet\Links\uv.exe" --version` dans Codex, ou `"$LOCALAPPDATA/Microsoft/WinGet/Links/uv.exe" --version` dans Claude Code (puis `.local\bin\uv.exe` dans le dossier personnel), et utilise ce chemin complet à la place de `uv` dans la suite de cette étape. Le chemin `WinGet\Links\uv.exe` n'est utile que jusqu'au prochain redémarrage de l'app.
-      **En cas d'échec**, dis-le simplement : « Je n'ai pas pu installer l'outil de lecture. La lecture des PDF et des images marchera quand même dans Claude, mais pas celle des fichiers Word ni la boîte a-lire. Relance `/aios:demarrer` (`$aios:demarrer`) plus tard pour réessayer. » N'écris rien dans `.aios-vault` et passe directement à l'étape 7 : les points suivants demandent l'outil.
-   2. **Autorisation (dans Claude Code)**, même si la ligne `documents:` existe déjà (vault créé dans Codex, par exemple) : ajoute `Bash(uv run --script *documents.py*)` au tableau `permissions.allow` de `.claude/settings.json` du vault s'il n'y est pas, sans retirer ce qui y est déjà. Ainsi la lecture des documents ne demande pas une autorisation à chaque fichier.
-   3. **Le réglage, seulement si la ligne `documents:` est absente de `.aios-vault`** (sinon il a déjà été fait : passe au point 6). Lance :
-      ```
-      uv run --script "<dossier de cette skill>/../../outils/documents.py" racine-drive
-      ```
-      - **Trouvé** (la commande affiche un chemin) : demande « Je vois ton Google Drive. On y range tes documents (les originaux), avec une boîte `a-lire` où tu peux déposer des fichiers depuis ton téléphone ? »
-      - **Introuvable** (code 4) : explique que sans Google Drive pour ordinateur, l'AIOS gardera seulement les fiches de lecture, pas les fichiers d'origine.
-   4. **Après un « oui »** :
-      - ajoute la ligne `documents: drive:AIOS` à `.aios-vault` (sans toucher aux autres lignes) ;
-      - lance `uv run --script "<dossier de cette skill>/../../outils/documents.py" dossier "<dossier courant>"`, qui crée `AIOS/a-lire/` et `AIOS/documents/` dans Drive ;
-      - explique en deux phrases : « Depuis ton téléphone ou ton navigateur, enregistre un document dans le dossier `AIOS/a-lire` de ton Google Drive. Ensuite, dis-moi « traite mes documents » : j'en fais une fiche et je range l'original dans `AIOS/documents`. »
-   5. **Refus, ou Drive introuvable** : ajoute la ligne `documents: aucun` à `.aios-vault`. `/aios:lire` marchera quand même avec un fichier donné directement. Pour changer d'avis plus tard (Drive installé entre-temps), il suffit de retirer cette ligne et de relancer `/aios:demarrer` : propose-le si l'utilisateur en parle.
-   6. **Le rappel du bilan.** Si la tâche « Rappel du bilan » existe déjà (`aios-rappel-bilan` dans Claude Code, avec `list_scheduled_tasks`), que Drive est réglé et que sa consigne ne parle pas encore de documents à lire, propose : « Je mets à jour ton rappel du dimanche pour qu'il compte aussi tes documents à lire ? » Après accord, dans Claude Code, modifie seulement son `prompt` avec `update_scheduled_task`, en reprenant la consigne de l'étape 9 (le garde-fou demandera ton accord, c'est normal). Dans Codex, guide l'utilisateur pour modifier la consigne dans la vue des tâches programmées. Sans accord, n'y touche pas.
-
-7. **Verrouiller les connecteurs.**
+5. **Verrouiller les connecteurs.**
    - Parcours la liste des outils MCP (`mcp__…`) disponibles dans cette session. Retiens ceux que le garde-fou du plugin juge sensibles, avec la même règle que `../../scripts/garde.sh` (lis-le) : dans la partie du nom après le dernier `__`, découpée en mots (camelCase, `_`, `-`, `.`), un mot de `VERBES_SENSIBLES`, ou, à défaut, l'un des mots de `SOUS_CHAINES` collé à d'autres (ex. `sendemail`). S'y ajoutent les modifications : un mot de `VERBES_MODIFICATION`, sauf si le nom contient le mot `draft` ou `drafts` (un brouillon reste libre), si un mot de `VERBES_LECTURE` vient avant (c'est une lecture), ou si c'est un outil de l'app Claude elle-même (serveur `ccd_…`, par exemple `mcp__ccd_turn__update_plan`) : ceux-là n'entrent dans la liste que pour leurs verbes sensibles.
    - **Dans Claude Code :**
      - Montre la liste à l'utilisateur, groupée par connecteur, et explique : « Pour ces actions — envoyer, publier, supprimer, modifier ce qui existe — je te demanderai toujours ton accord, même en mode automatique. Créer reste libre. »
@@ -96,48 +77,51 @@ $b = $c | Where-Object { $_ } | ForEach-Object { Join-Path $_ 'bin\bash.exe' } |
      - **Vérifie d'abord que les protections tournent.** Lis `.git/aios-sauvegarde.log` : la sauvegarde y écrit une ligne datée à la fin de chacune de tes réponses, et le garde-fou est approuvé en même temps qu'elle. S'il n'existe pas ou n'a aucune ligne d'aujourd'hui, n'annonce aucune protection : demande à l'utilisateur de cliquer sur l'icône d'**ancre** avec un point jaune (en bas de la zone de message) et d'approuver les deux hooks de l'AIOS, puis d'ouvrir une nouvelle conversation et de relancer `$aios:demarrer`. Arrête-toi là.
      - N'écris aucun réglage. Codex ne sait pas demander ton accord pour ces actions : le garde-fou les bloque toutes, même si l'utilisateur confirme. Montre la liste groupée par connecteur et explique : « Dans Codex, ces actions sont bloquées par sécurité : je ne peux ni envoyer, ni publier, ni supprimer, ni modifier ce qui existe déjà à ta place. Je peux en revanche créer, et préparer un brouillon ; tu l'envoies toi-même depuis l'app concernée (Gmail…), ou tu me le demandes depuis Claude. » Les connecteurs branchés plus tard sont bloqués de la même façon, sans rien à refaire.
 
-8. **Sauvegarde.**
+6. **Sauvegarde.**
    - Si `git config user.name` ou `user.email` est vide dans le vault, demande un nom et un email (ou l'adresse « noreply » GitHub) et configure-les **localement** (`git config user.name …` sans `--global`).
    - Enregistre l'état actuel : `git add -A`, puis, seulement s'il y a des changements (`git diff --cached --quiet` échoue), `git commit -m "AIOS : installation du vault"` (ou `"AIOS : mise à jour du profil"` lors d'une relance).
-   - Propose une sauvegarde en ligne sur GitHub, dans un dépôt **privé**. Seulement après un « oui » explicite, vérifie `gh auth status` :
-     - **GitHub est connecté** :
-       ```bash
-       gh repo create <nom-choisi> --private --source . --remote origin --push
-       ```
-     - **`gh` est absent ou pas connecté** : ne fais taper aucune commande à l'utilisateur, et ne l'envoie pas dans un terminal. Dis-lui : « La sauvegarde en ligne demande une connexion à GitHub qu'on fera plus tard, avec de l'aide si besoin. En attendant, la sauvegarde locale continue : chaque modification est enregistrée sur ton ordinateur. » Puis passe à l'étape suivante.
+   - La sauvegarde en ligne (GitHub) est une option : ne la propose pas ici.
 
-9. **Brief du matin et rappel du bilan.**
-   - **Les tâches existent-elles déjà dans cette app ?**
-     - **Dans Claude Code :** cherche l'outil `create_scheduled_task` (serveur `scheduled-tasks`) parmi les outils de la session ; il faut parfois le charger. S'il n'existe pas, dis : « Les rappels automatiques demandent l'app de bureau Claude. Tu peux lancer `/aios:brief` à la main quand tu veux. » Puis passe à l'étape suivante. Sinon, appelle `list_scheduled_tasks` et cherche `aios-brief-du-matin` et `aios-rappel-bilan`.
-     - **Dans Codex :** regarde dans la vue des tâches programmées (ou avec l'outil de liste des tâches de l'app, s'il existe) si des tâches « Brief du matin » et « Rappel du bilan » existent pour ce projet.
-     - **Si elles existent** : donne leurs horaires actuels en clair (par exemple « brief du lundi au vendredi à 8 h 30, rappel le dimanche à 18 h ») et demande si l'utilisateur veut les changer. S'il veut changer, pose les questions d'horaires ci-dessous pour la tâche concernée et modifie-la (dans Claude Code, avec `update_scheduled_task`, son `cronExpression` seulement ; le garde-fou demandera son accord, c'est normal). Ne crée jamais un doublon. Puis va au point des autorisations.
-   - **Une seule app** : si aucune tâche n'existe ici, demande « Utilises-tu aussi l'autre app (Claude ou Codex), avec un brief déjà programmé là-bas ? ». Indice : si la première ligne de `brief.md` date d'aujourd'hui ou d'hier, un brief tourne déjà ailleurs ; mentionne-le. Si oui, ne programme rien ici : dis que le brief reste là où il est, et que `/aios:brief` (ou `$aios:brief`) reste utilisable à la main. Passe à l'étape suivante.
-   - Demande : « Veux-tu recevoir un brief du matin (tes priorités, tes rendez-vous, tes projets en retard) et un rappel pour faire ton bilan de la semaine ? » Si c'est non, passe à l'étape suivante.
-   - Après un « oui », pose les questions d'horaires, une à la fois, en donnant à chaque fois la valeur par défaut :
-     - « À quelle heure veux-tu ton brief ? (8 h par défaut) »
-     - « Quels jours ? (du lundi au vendredi par défaut) »
-     - « À quel moment veux-tu le rappel du bilan ? (le dimanche à 18 h par défaut) »
-     - Si l'utilisateur ne sait pas ou dit « comme tu veux », prends la valeur par défaut. Répète ensuite les horaires retenus en une phrase et attends sa confirmation.
-   - **Dans Claude Code :**
-     - Traduis les horaires en expression cron, en heure locale : `<minute> <heure> * * <jours>`, avec les jours de 0 (dimanche) à 6 (samedi). Exemples : 8 h du lundi au vendredi = `0 8 * * 1-5` (par défaut pour le brief) ; 7 h 45 tous les jours = `45 7 * * *` ; dimanche 18 h = `0 18 * * 0` (par défaut pour le rappel).
-     - **Consigne du rappel et documents.** Si Drive est réglé (`documents: drive:AIOS`), remplace dans la consigne du rappel ci-dessous la phrase « compte les fichiers de `00-inbox/` (…), puis affiche uniquement : « C'est l'heure de ton bilan de la semaine (N éléments dans l'inbox). » » par : « compte les fichiers de `00-inbox/` (sous-dossiers compris, sans les fichiers cachés), puis ceux du dossier `<dossier a-lire>` (sans les fichiers cachés ni `desktop.ini`), puis affiche uniquement : « C'est l'heure de ton bilan de la semaine (N éléments dans l'inbox, M documents à lire). » », où `<dossier a-lire>` est le chemin absolu de `AIOS/a-lire` affiché par la commande `dossier` de l'étape 6, suivi de `\a-lire`. Fais de même dans Codex.
-     - Crée les tâches manquantes avec `create_scheduled_task`, en remplaçant `<chemin du vault>` par le chemin absolu du dossier courant et `<jour et heure>` par le moment choisi pour le rappel (par exemple « dimanche 18 h ») :
-       - `taskId: aios-brief-du-matin`, `title: Brief du matin`, `description: Brief du matin du vault AIOS`, `cronExpression` : celle du brief, `prompt` : « Tu es dans le vault AIOS `<chemin du vault>`. Si le dossier courant n'est pas ce vault, dis-le et arrête-toi. Sinon, lance `/aios:brief`. »
-       - `taskId: aios-rappel-bilan`, `title: Rappel du bilan`, `description: Rappel du bilan hebdomadaire du vault AIOS (<jour et heure>)`, `cronExpression` : celle du rappel, `prompt` : « Tu es dans le vault AIOS `<chemin du vault>`. Si le dossier courant n'est pas ce vault, dis-le et arrête-toi. Sinon, compte les fichiers de `00-inbox/` (sous-dossiers compris, sans les fichiers cachés), puis affiche uniquement : « C'est l'heure de ton bilan de la semaine (N éléments dans l'inbox). Tape `/aios:bilan` quand tu veux. » Ne modifie rien. »
-     - **Autorisations**, à faire dès que les tâches existent, même si les tâches existent déjà (un agenda a pu être branché depuis). Pour que le brief n'attende pas d'autorisation, ajoute au tableau `permissions.allow` de `.claude/settings.json` du vault, sans retirer ce qui y est déjà, **uniquement** :
-       - `Edit(./brief.md)`, l'écriture du fichier du brief ;
-       - les outils de **lecture** de l'agenda présents dans la session : ceux d'un connecteur d'agenda dont le nom commence par `list_`, `get_` ou `search_` (par exemple `mcp__<serveur>__list_events`). Jamais un outil qui crée, modifie, supprime ou répond.
-     - Explique : les tâches ne tournent que quand l'app de bureau Claude est ouverte. Si l'ordinateur était éteint à l'heure prévue, elles partent au prochain lancement. Elles apparaissent dans la barre latérale, section des tâches programmées.
-   - **Dans Codex :**
-     - Crée, avec l'outil de tâches programmées de l'app (ou en guidant l'utilisateur dans la vue des tâches programmées si tu ne peux pas le faire), deux tâches **récurrentes sur ce projet** (le vault), aux horaires choisis, en heure locale :
-       - « Brief du matin » : consigne « Tu es dans le vault AIOS `<chemin du vault>`. Si le dossier courant n'est pas ce vault, dis-le et arrête-toi. Sinon, lance `$aios:brief`. »
-       - « Rappel du bilan » : consigne « Tu es dans le vault AIOS `<chemin du vault>`. Si le dossier courant n'est pas ce vault, dis-le et arrête-toi. Sinon, compte les fichiers de `00-inbox/` (sous-dossiers compris, sans les fichiers cachés), puis affiche uniquement : « C'est l'heure de ton bilan de la semaine (N éléments dans l'inbox). Tape `$aios:bilan` quand tu veux. » Ne modifie rien. »
-     - Si l'app te demande de confirmer la création, explique à l'utilisateur qu'il doit la valider.
-     - Explique : les tâches ne tournent que quand l'app est ouverte et l'ordinateur allumé. Elles ne peuvent rien envoyer, supprimer ni modifier : le garde-fou les bloque.
+7. **Rappel du bilan.** Pose une seule question : « Veux-tu un rappel pour faire ton bilan de la semaine ? (le dimanche à 18 h par défaut) ». C'est le bilan qui fait vivre l'AIOS et qui proposera les options : sans rappel, on l'oublie.
+   - Si la ligne `rappel:` existe déjà dans `.aios-vault`, ne repose pas la question.
+   - Pour un vault déjà installé qui n'a pas cette ligne, regarde d'abord si la tâche « Rappel du bilan » existe (dans Claude Code, `aios-rappel-bilan` dans `list_scheduled_tasks`) : si oui, écris `rappel: oui`, sans toucher aux autres lignes, et ne pose pas la question.
+   - Après un « oui », lis `options/taches-programmees.md` (dans le dossier de cette skill) et ne fais que sa partie « Rappel du bilan », avec sa « Mécanique commune ». Il écrit la ligne `rappel: oui`.
+   - Après un « non », écris `rappel: non` dans `.aios-vault`, sans toucher aux autres lignes.
+   - Sans app de bureau (aucun outil de tâches programmées), le rappel est reporté : dis-le en une ligne et continue. Le socle se termine quand même.
 
-10. **Obsidian.** Explique que le dossier peut s'ouvrir dans Obsidian (« Ouvrir un dossier comme coffre ») pour lire et naviguer.
+8. **Options.** Ne propose aucune option le premier jour : c'est le bilan qui propose, une par semaine.
+   - **Vault neuf** : rien à faire ici.
+   - **Vault installé avant la version 0.9.0** (son `.aios-vault` n'a pas de ligne `installe:`) : écris `installe: avant-0.9.0`, puis les lignes manquantes d'après l'état réel, sans toucher aux autres lignes :
+     - `brief: oui` si une tâche « Brief du matin » existe pour ce vault (dans Claude Code, `aios-brief-du-matin` dans `list_scheduled_tasks`) ;
+     - `rappel: oui` si une tâche « Rappel du bilan » existe (`aios-rappel-bilan`) ;
+     - `github: oui` si `git remote get-url origin` répond ;
+     - `import: fait`, car la question lui a été posée à l'installation.
+     Ne propose rien : là aussi, c'est le bilan qui propose.
+   - **Vault déjà installé, relancé** (après l'état des lieux ci-dessus, s'il y en a eu un) : pour chaque option active (`brief: oui`, `rappel: oui`, `documents: drive:AIOS` dans `.aios-vault`), lis son fichier dans `options/` (`taches-programmees.md`, `documents.md`) et ne fais que sa section « À chaque relance ». Une option qui n'est pas active n'est pas lue.
 
-11. **Conclure** en trois lignes : ce qui est en place, les commandes utiles (`/aios:brief`, `/aios:capture`, `/aios:bilan`, `/aios:etat-projet`, `/aios:importer`, `/aios:lire`, `/aios:creer-recette` dans Claude Code ; `$aios:brief`, `$aios:capture`, `$aios:bilan`, `$aios:etat-projet`, `$aios:importer`, `$aios:lire`, `$aios:creer-recette` dans Codex), et le conseil de faire un bilan chaque semaine.
+9. **Conclure** en quatre lignes au plus :
+   - ce qui est en place ;
+   - les commandes utiles (`/aios:brief`, `/aios:capture`, `/aios:bilan`, `/aios:etat-projet`, `/aios:importer`, `/aios:lire`, `/aios:creer-recette` dans Claude Code ; `$aios:brief`, `$aios:capture`, `$aios:bilan`, `$aios:etat-projet`, `$aios:importer`, `$aios:lire`, `$aios:creer-recette` dans Codex) ;
+   - pour un vault neuf, le premier rendez-vous : « Fais ton premier bilan dans une semaine : dis simplement « bilan ». » ;
+   - pour un vault neuf, les options, en une ligne : « Plus tard, je te proposerai une à une : importer tes notes, un brief du matin, une sauvegarde en ligne, la lecture de tes documents. Tu peux en demander une quand tu veux. »
+   Ajoute en une phrase que le dossier peut s'ouvrir dans Obsidian (« Ouvrir un dossier comme coffre ») pour lire et naviguer.
+
+## À la demande
+
+Quand l'utilisateur demande une option dans un vault déjà installé, ne refais pas le socle : lis le fichier de l'option dans `options/` (dans le dossier de cette skill) et suis-le.
+
+| L'utilisateur dit | Fichier à suivre |
+|---|---|
+| « active le brief », « je veux le brief du matin » | `options/taches-programmees.md`, partie « Brief du matin » |
+| « changer l'heure de mon brief » | `options/taches-programmees.md`, section « À chaque relance » |
+| « active le rappel du bilan » | `options/taches-programmees.md`, partie « Rappel du bilan » |
+| « sauvegarde en ligne » | `options/github.md` |
+| « active les documents » | `options/documents.md` |
+| « importe mes notes » | `options/importer.md` |
+
+Une option déjà refusée (`brief: non`, `rappel: non`, `github: non`, `import: non`, `documents: aucun`) ou reportée (`…-plus-tard:`) s'active de la même façon : le fichier de l'option remplace sa ligne dans `.aios-vault`.
+
+Si le dossier courant n'est pas un vault (pas de `.aios-vault`), commence par le socle.
 
 ## Ce que tu ne fais jamais
 
@@ -148,5 +132,6 @@ $b = $c | Where-Object { $_ } | ForEach-Object { Join-Path $_ 'bin\bash.exe' } |
 - Modifier la configuration Git globale de l'utilisateur.
 - Écrire dans la configuration globale de Codex (dans le dossier personnel de l'utilisateur).
 - Programmer le brief dans les deux apps à la fois.
+- Proposer une option le premier jour (import, brief, sauvegarde en ligne, documents) : c'est le bilan qui les propose, une par semaine.
 - Lancer un script du plugin avec `bash` tout court dans Codex.
 - Enregistrer un mot de passe, une clé ou un code dans le vault.

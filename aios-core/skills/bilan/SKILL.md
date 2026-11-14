@@ -42,12 +42,21 @@ Tu fais le point sur le vault avec l'utilisateur, en 15 minutes environ. Tu prop
    - Pour chaque anomalie, propose la correction (texte avant et après pour `AGENTS.md`) et applique seulement après accord.
    - Une anomalie que l'utilisateur choisit de garder (un fichier long, une fiche hors liste) est notée dans le bilan écrit comme « accepté tel quel ». Ne la signale plus si un bilan des 13 dernières semaines la note ainsi et qu'elle n'a pas changé.
 4. **Prochaines actions.** Demande s'il y a une décision ou une priorité de la semaine à noter, et range-la avec la skill `capture`.
+4 bis. **Une nouveauté à activer ?** L'AIOS a quatre options, proposées une par bilan : `import` (faire entrer du contenu existant), `brief` (le brief du matin), `github` (la sauvegarde en ligne), `documents` (la lecture des documents). Leurs fichiers sont dans `../demarrer/options/`, par rapport au dossier de cette skill : `importer.md`, `taches-programmees.md`, `github.md`, `documents.md`.
+   1. Lis `.aios-vault`. Une option est **décidée** si sa ligne existe (`import:`, `brief:`, `github:`, `documents:`). Elle l'est aussi si elle est déjà en place : une tâche « Brief du matin » existe pour ce vault (dans Claude Code, `aios-brief-du-matin` dans `list_scheduled_tasks`, si cet outil existe), ou `git remote get-url origin` répond. Dans ce cas, écris sa ligne (`brief: oui`, `github: oui`), sans toucher aux autres lignes, retire sa ligne `-plus-tard` s'il y en a une, et ne la propose pas.
+   2. Prends la première option sans aucune ligne, dans l'ordre `import`, `brief`, `github`, `documents`. S'il n'y en a plus, prends une option reportée et sans ligne de décision (`<option>-plus-tard: AAAA-MM-JJ`) depuis plus de quatre semaines, la plus ancienne d'abord. Le rappel du bilan n'est jamais proposé ici, même s'il a une ligne `rappel-plus-tard:`. S'il n'y en a pas non plus, ne dis rien et passe à l'étape 5.
+   3. Propose-la en deux phrases, à partir des lignes « Ce que ça apporte » et « Temps » de son fichier. Trois réponses possibles :
+      - **oui** : lis le fichier de l'option et suis-le maintenant (pour le brief : sa partie « Brief du matin ») ; l'utilisateur vient de dire oui, ne repose pas sa question d'ouverture ;
+      - **plus tard** : écris `<option>-plus-tard: AAAA-MM-JJ` (date du jour) dans `.aios-vault`, sans toucher aux autres lignes ; le prochain bilan passera à l'option suivante ;
+      - **non** : écris sa ligne de refus (`import: non`, `brief: non`, `github: non`, `documents: aucun`), sans toucher aux autres lignes, retire sa ligne `-plus-tard` s'il y en a une, et dis qu'elle reste disponible à la demande.
+   4. Une seule proposition par bilan, quelle que soit la réponse.
 5. **Écrire le bilan** dans `journal/AAAA-Sxx.md` (semaine ISO, créé si besoin), section `## Bilan` :
    - inbox vidée (nombre) ;
    - projets archivés ;
    - réglages, recettes ou règles modifiés ;
    - corrections répétées sur une commande qui ne se règle pas (`demarrer`, `mettre-a-jour`), s'il y en a ;
    - santé du vault : anomalies corrigées, anomalies gardées (« accepté tel quel »), ou rien à signaler ;
+   - nouveauté : activée, refusée, reportée, ou aucune ;
    - priorités de la semaine suivante.
 6. **Sauvegarder.** Lance le script de sauvegarde du plugin (`../../scripts/sauvegarde.sh`, par rapport au dossier de cette skill), avec le dossier du vault en argument :
    - **Dans Claude Code :**
@@ -68,4 +77,5 @@ Tu fais le point sur le vault avec l'utilisateur, en 15 minutes environ. Tu prop
 - Modifier un fichier du moteur de l'AIOS : les ajustements vont dans `mes-reglages.md`.
 - Supprimer un fichier : on archive.
 - Archiver un projet sans accord.
+- Proposer plus d'une nouveauté par bilan, ou une nouveauté déjà en place ou refusée.
 - Transformer le bilan en audit interminable : si l'inbox est énorme, traite les 20 éléments les plus récents et propose la suite pour plus tard.

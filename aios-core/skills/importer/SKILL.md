@@ -21,7 +21,7 @@ Tu fais entrer du contenu existant dans le vault, **sans jamais toucher à la so
 3. **Proposer un rangement par lots de 10 au plus.** Pour chaque élément du lot, propose sa destination selon les règles de rangement d'`AGENTS.md` (projet, domaine, ressource, archive) en une ligne : `nom → destination (nouvelle fiche | compléter [[fiche]])`. Si un élément contredit une fiche (un prix, une date), ne remplace rien, montre les deux valeurs et demande laquelle est la bonne : la note peut être plus ancienne que la fiche. Si la note a raison, remplace le fait en gardant sa trace ; sinon la fiche reste telle quelle.
 4. **Appliquer seulement après accord**, lot par lot. L'utilisateur peut corriger une ligne ; tu appliques la correction. Les nouvelles fiches suivent les schémas du plugin (`../../schemas/`, par rapport au dossier de cette skill).
 5. **Laisser le reste.** Ce qui n'est pas rangé reste dans la zone d'import ; le bilan hebdomadaire le reprendra.
-6. **Conclure** : nombre d'éléments importés, rangés, restants.
+6. **Conclure** : nombre d'éléments importés, rangés, restants. Écris ensuite la ligne `import: fait` dans `.aios-vault` (elle remplace `import: non`), sans toucher aux autres lignes, et retire la ligne `import-plus-tard:` s'il y en a une : le bilan ne proposera plus l'import.
 
 ## Ce que tu ne fais jamais
 

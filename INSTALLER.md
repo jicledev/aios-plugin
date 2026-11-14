@@ -23,9 +23,6 @@ Tu installes l'AIOS pour une personne qui n'est peut-être pas technique. Règle
    - **La commande répond** : continue.
    - **Elle échoue** : explique que l'AIOS a besoin d'un petit outil gratuit, Git for Windows. L'utilisateur l'installe depuis https://git-scm.com/download/win en gardant les options par défaut, ferme complètement son app (Claude ou ChatGPT/Codex), la rouvre sur ce dossier et recolle la même phrase. Arrête-toi là.
 
-4. **Vérifie uv**, le petit outil qui fait tourner les programmes de lecture de documents de l'AIOS. Lance `uv --version`.
-   - **La commande répond** : continue.
-   - **Elle échoue** : annonce « J'installe un petit outil gratuit (uv) qui servira à lire tes documents ; Windows va te demander de l'autoriser. », puis lance `winget install --id astral-sh.uv -e`. Si l'installation échoue, dis-le en une phrase et continue quand même : tout le reste de l'AIOS fonctionne sans lui, et `/aios:demarrer` (ou `$aios:demarrer`) le proposera de nouveau.
 
 ## Claude Code
 
@@ -62,7 +59,7 @@ Tu installes l'AIOS pour une personne qui n'est peut-être pas technique. Règle
    ```
    /aios:demarrer
    ```
-   Explique ce qui va suivre : quelques questions sur lui, ses activités et ses projets, puis Claude prépare le vault. Compter 15 à 20 minutes.
+   Explique ce qui va suivre : quelques questions sur lui, ses activités et ses projets, puis Claude prépare le vault. Compter une dizaine de minutes : le premier jour, l'AIOS n'installe que l'essentiel.
 
 ## Mettre à jour l'AIOS
 
@@ -77,9 +74,9 @@ Si tu es Codex (l'app ChatGPT « Powered by Codex »), suis cette section à la 
 2. **Installe le moteur.** « Le plugin **aios** apparaît, avec ses recettes : clique sur **Installer le plug-in**. » S'il est déjà installé, passe à l'étape suivante.
 3. **Approuve les protections.** « L'app te demande d'approuver deux hooks de l'AIOS (ou une icône d'ancre avec un point jaune apparaît en bas de la zone de message) : approuve-les. » Explique en une phrase : ce sont le garde-fou (rien n'est envoyé ni supprimé sans toi) et la sauvegarde automatique ; sans cette approbation, ils ne tournent pas.
 4. **Ouvre une nouvelle conversation** sur ce dossier (le projet du vault) : le moteur ne sert qu'à partir de là.
-5. **Lance l'installation du vault.** Dans cette nouvelle conversation, l'utilisateur tape `$aios:demarrer`. Explique ce qui va suivre : quelques questions, puis le vault est prêt (15 à 20 minutes).
+5. **Lance l'installation du vault.** Dans cette nouvelle conversation, l'utilisateur tape `$aios:demarrer`. Explique ce qui va suivre : quelques questions, puis le vault est prêt (une dizaine de minutes).
 
-**Le dossier contient déjà `.aios-vault`** (vault installé avec Claude, ouvert pour la première fois dans Codex) : fais seulement les étapes 1 à 4, puis `$aios:demarrer`, qui reconnaîtra le vault et n'ajoutera que la partie Codex (protections et, au choix, le brief du matin). Rien de son contenu ne change.
+**Le dossier contient déjà `.aios-vault`** (vault installé avec Claude, ouvert pour la première fois dans Codex) : fais seulement les étapes 1 à 4, puis `$aios:demarrer`, qui reconnaîtra le vault et n'ajoutera que la partie Codex (les protections). Rien de son contenu ne change.
 
 **Une limite à annoncer honnêtement** : dans Codex, le garde-fou ne peut pas demander l'accord de l'utilisateur, il bloque donc toute action sensible (envoyer, publier, supprimer, modifier ce qui existe), même confirmée. Codex peut préparer des brouillons ; l'envoi se fait dans l'app concernée ou depuis Claude.
 

@@ -7,6 +7,14 @@ Ce fichier est lu par la commande `demarrer` quand elle est relancée sur un vau
 
 Les versions sont listées de la plus récente à la plus ancienne.
 
+## 0.9.0
+
+**Règles ajoutées**
+- Aucune.
+
+**Phrases remplacées**
+- Aucune.
+
 ## 0.8.0
 
 **Règles ajoutées**

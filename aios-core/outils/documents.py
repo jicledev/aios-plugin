@@ -53,7 +53,7 @@ def reglage(vault: Path) -> str:
     for ligne in marqueur.read_text(encoding="utf-8").splitlines():
         if ligne.startswith("documents:"):
             return ligne.split(":", 1)[1].strip()
-    raise Arret(ABSENT, "Les documents ne sont pas encore réglés : relance demarrer.")
+    raise Arret(ABSENT, "Les documents ne sont pas encore réglés : dis « active les documents ».")
 
 
 def dossier_aios(vault: Path) -> Path:
@@ -62,7 +62,7 @@ def dossier_aios(vault: Path) -> Path:
     if valeur == "aucun":
         raise Arret(AUCUN, "Pas de Google Drive réglé pour les documents (documents: aucun).")
     if not valeur.startswith("drive:") or not valeur[6:]:
-        raise Arret(ABSENT, f"Réglage documents illisible : « {valeur} ». Relance demarrer.")
+        raise Arret(ABSENT, f"Réglage documents illisible : « {valeur} ». Dis « active les documents ».")
     d = racine_drive() / valeur[6:]
     for sous in ("a-lire", "documents"):
         (d / sous).mkdir(parents=True, exist_ok=True)

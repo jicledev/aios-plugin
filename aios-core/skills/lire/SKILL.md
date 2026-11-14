@@ -22,8 +22,8 @@ Commandes : `a-lire <vault>`, `infos <fichier>`, `extraire <fichier> [--pages A-
 
 0. **Vérifier l'outil.** Lance `uv --version`. Si la commande est introuvable alors que l'outil vient d'être installé, essaie le chemin complet `"$LOCALAPPDATA/Microsoft/WinGet/Links/uv.exe"` (Claude Code) ou `"$env:LOCALAPPDATA\Microsoft\WinGet\Links\uv.exe"` (Codex), et utilise-le à la place de `uv` ; à défaut, conseille de fermer et rouvrir l'app.
    **Sans uv** :
-   - **Dans Codex** : dis « Pour lire tes documents, l'AIOS a besoin d'un petit outil qui n'est pas installé. Relance `$aios:demarrer` : il l'installera. » Puis arrête-toi.
-   - **Dans Claude Code**, continue en mode réduit, en le disant en une phrase (« l'outil de lecture manque : relance `/aios:demarrer` pour l'installer ; en attendant je fais sans ») :
+   - **Dans Codex** : dis « Pour lire tes documents, l'AIOS a besoin d'un petit outil qui n'est pas installé. Dis « active les documents » : je l'installerai. » Puis arrête-toi.
+   - **Dans Claude Code**, continue en mode réduit, en le disant en une phrase (« l'outil de lecture manque : dis « active les documents » pour l'installer ; en attendant je fais sans ») :
      - seulement un fichier donné directement (pas de boîte a-lire) ;
      - PDF et images lus avec ton outil de lecture de fichiers (un PDF de plus de quelques mégaoctets ne peut pas être lu sans l'outil : dis-le et laisse-le) ; un fichier **Word** ne peut pas être lu : signale-le et laisse-le ;
      - empreinte calculée avec `sha256sum "<fichier>"` (premier mot de la sortie) ;
@@ -32,7 +32,7 @@ Commandes : `a-lire <vault>`, `infos <fichier>`, `extraire <fichier> [--pages A-
 1. **Trouver les documents.**
    - **Un fichier est donné** (dépôt direct) : c'est le seul document à traiter. S'il a été collé dans la conversation sans chemin, demande où il est enregistré ; sans chemin, écris la fiche sans `empreinte` ni original, en le disant. Lance aussi `dossier <vault>` pour savoir si Drive est disponible : code 0, l'original sera rangé ; **code 2, 3 ou 4**, il ne le sera pas (`original_local`), sans bloquer. Pour le code 4, dis que Google Drive semble arrêté sur cet ordinateur.
    - **Rien n'est donné** : lance `a-lire <vault>`. Chaque ligne est un fichier de la boîte `AIOS/a-lire/` de Drive, du plus ancien au plus récent. Si la liste est vide, dis « Rien à lire dans ta boîte a-lire. » et arrête-toi. S'il y en a plus de 10, traite les 10 plus anciens et propose la suite pour plus tard.
-     - **Code 3** : « Tes documents ne sont pas encore réglés : relance `/aios:demarrer` (`$aios:demarrer`). » Arrête-toi.
+     - **Code 3** : « Tes documents ne sont pas encore réglés : dis « active les documents ». » Arrête-toi.
      - **Code 2** : explique qu'il n'y a pas de boîte a-lire (pas de Google Drive réglé) et qu'on peut lui donner un fichier directement. Arrête-toi.
      - **Code 4** : dis que Google Drive semble arrêté sur cet ordinateur (à relancer), et qu'on peut lui donner un fichier directement. Arrête-toi.
 
