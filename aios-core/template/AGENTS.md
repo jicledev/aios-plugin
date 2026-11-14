@@ -19,6 +19,7 @@ Ce fichier est lu au début de chaque session. Il dit qui je suis, où trouver l
 | `30-ressources/` | Réutilisable : `ma-voix.md`, `templates/`, `references/`. |
 | `90-archives/` | Projets terminés ou abandonnés, déplacés tels quels. |
 | `journal/` | Un fichier par semaine (`AAAA-Sxx.md`) : décisions, corrections, bilans. |
+| Google Drive › `AIOS/` | Hors du vault : `a-lire/` (documents déposés, pas encore lus) et `documents/` (les originaux). |
 
 Pour lister les projets, lire les en-têtes des `10-projets/*/README.md` (pas d'index tenu à la main).
 
@@ -32,6 +33,7 @@ Pour lister les projets, lire les en-têtes des `10-projets/*/README.md` (pas d'
 
 - **Ce vault est la source de vérité** de mon contexte : projets, décisions, règles, style.
 - Les outils externes (email, agenda, Notion, etc.) sont des **accès**, pas des mémoires. Ne pas recopier leurs données dans le vault, sauf une décision ou un fait utile à garder.
+- **Documents** (PDF, Word, images) : les originaux vivent dans Google Drive (`AIOS/documents/`), leurs fiches de lecture dans le vault. Format des fiches : `schemas/document.md` du plugin AIOS.
 - Un projet peut déclarer un lien Notion dans son en-tête (`notion:`) ; Notion n'est alors qu'un connecteur pour ce projet.
 - **Projets avec du code** : le code vit hors du vault, dans son propre dépôt (champs `code_repo`, `code_local`, `code_stack` de la fiche). Décisions **produit** (quoi, pour qui, priorités) → fiche projet du vault. Décisions **techniques** (architecture, librairies) → dans le dépôt de code. Ne jamais recopier de code dans le vault.
 

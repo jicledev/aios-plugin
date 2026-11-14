@@ -6,6 +6,7 @@ Ce que tu obtiens :
 - un dossier bien rangé : inbox, projets, domaines, ressources, archives, journal ;
 - des commandes en français : `/aios:capture` pour ranger une info, `/aios:bilan` pour faire le point de la semaine, `/aios:etat-projet` pour savoir où en est un projet, `/aios:importer` pour récupérer tes notes existantes ;
 - un **brief du matin**, chaque jour de semaine à 8 h, avec tes priorités, tes rendez-vous et tes projets en retard (`/aios:brief` pour l'avoir à tout moment), et un rappel du bilan le dimanche ;
+- la **lecture de tes documents** (PDF, Word, images) : dépose-les dans le dossier `AIOS/a-lire` de ton Google Drive, même depuis ton téléphone, puis `/aios:lire` en fait des fiches de lecture rangées dans ton vault, en gardant les originaux dans Drive ;
 - un **garde-fou** : rien n'est envoyé, publié ou supprimé sans ton accord ;
 - une **sauvegarde automatique** de ton vault.
 

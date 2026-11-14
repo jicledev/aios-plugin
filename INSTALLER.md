@@ -23,6 +23,10 @@ Tu installes l'AIOS pour une personne qui n'est peut-être pas technique. Règle
    - **La commande répond** : continue.
    - **Elle échoue** : explique que l'AIOS a besoin d'un petit outil gratuit, Git for Windows. L'utilisateur l'installe depuis https://git-scm.com/download/win en gardant les options par défaut, ferme complètement son app (Claude ou ChatGPT/Codex), la rouvre sur ce dossier et recolle la même phrase. Arrête-toi là.
 
+4. **Vérifie uv**, le petit outil qui fait tourner les programmes de lecture de documents de l'AIOS. Lance `uv --version`.
+   - **La commande répond** : continue.
+   - **Elle échoue** : annonce « J'installe un petit outil gratuit (uv) qui servira à lire tes documents ; Windows va te demander de l'autoriser. », puis lance `winget install --id astral-sh.uv -e`. Si l'installation échoue, dis-le en une phrase et continue quand même : tout le reste de l'AIOS fonctionne sans lui, et `/aios:demarrer` (ou `$aios:demarrer`) le proposera de nouveau.
+
 ## Claude Code
 
 1. **Choisis la voie.** Lance `claude --version`.

@@ -47,7 +47,7 @@ L'app n'a pas de commande pour cela : tu guides l'utilisateur, une étape à la 
 
 ### Dans les deux cas
 
-5. **Nouveautés du vault.** Rappelle que la mise à jour ne modifie jamais son vault. Si la nouvelle version apporte des nouveautés dans la structure du vault, `/aios:demarrer` (ou `$aios:demarrer` dans Codex) les ajoutera, après son accord.
+5. **Nouveautés du vault.** Rappelle que la mise à jour ne modifie jamais son vault. Si la version a changé, propose de relancer `/aios:demarrer` (ou `$aios:demarrer` dans Codex) une fois la nouvelle version activée : il reconnaîtra le vault, n'ajoutera que ce qui manque (par exemple le réglage des documents) et demandera son accord à chaque fois.
 
 ## Ce que tu ne fais jamais
 

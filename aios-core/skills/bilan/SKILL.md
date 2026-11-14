@@ -12,6 +12,8 @@ Tu fais le point sur le vault avec l'utilisateur, en 15 minutes environ. Tu prop
 
 0. **La sauvegarde tourne-t-elle ?** Lance `git status --porcelain` dans le vault. S'il y a des modifications non enregistrées, regarde la date de la dernière sauvegarde (`git log -1 --format=%cs`) et la date de modification la plus récente de ces fichiers. Si des modifications attendent depuis **plus d'un jour**, commence par : « Attention : la sauvegarde automatique ne tourne plus depuis <date de la dernière sauvegarde>. Dans Codex, réapprouve les hooks (l'icône d'ancre avec un point jaune) ; dans Claude, dis-le-moi. » Puis continue le bilan : l'étape 6 enregistrera tout.
 
+0 bis. **Des documents à lire ?** Si `.aios-vault` contient `documents: drive:AIOS`, lance `uv run --script "<dossier de cette skill>/../../outils/documents.py" a-lire "<dossier du vault>"` et compte les lignes. S'il y en a, annonce « M documents à lire dans ta boîte a-lire » et propose de les traiter maintenant avec `/aios:lire` (`$aios:lire` dans Codex), ou plus tard. Si `uv` est introuvable juste après son installation, essaie le chemin complet `"$LOCALAPPDATA/Microsoft/WinGet/Links/uv.exe"` (Claude Code) ou `"$env:LOCALAPPDATA\Microsoft\WinGet\Links\uv.exe"` (Codex). Si la commande répond code 4, dis en une ligne « Google Drive semble arrêté : je ne vois pas ta boîte a-lire. » ; pour tout autre échec (outil absent), ne dis rien. Dans les deux cas, continue.
+
 1. **Vider l'inbox.** Pour chaque élément de `00-inbox/` (zones d'import comprises), propose une destination selon les règles de la skill `capture`, par groupes de 5 au plus. Applique ce qui est accepté. Ce qui est refusé reste.
 2. **Archiver.**
    - Liste les projets dont `statut` vaut `termine` ou `abandonne`.
