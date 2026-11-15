@@ -2,7 +2,8 @@
 # Hook PreToolUse AIOS : exige une validation pour toute action sensible d'un
 # connecteur (outils mcp__…) : envoi, publication, programmation, suppression…
 # et pour toute modification d'une donnée existante (update, edit, move…).
-# Créer reste libre ; un brouillon reste libre, même modifié ; une lecture aussi ;
+# Créer reste libre, sauf un événement d'agenda (il s'affiche aussitôt et invite ses participants) ;
+# un brouillon reste libre, même modifié ; une lecture aussi ;
 # les outils de l'app Claude sur elle-même (serveur ccd_…) ne sont pas des modifications.
 # Ne s'applique que dans un vault AIOS. En mode automatique, et toujours dans Codex, l'action est refusée.
 # Rapide : la vérification du verbe se fait en bash pur avant toute autre chose.
@@ -18,9 +19,13 @@ VERBES_MODIFICATION=" update edit modify replace overwrite patch move rename arc
 # les mots de modification qui suivent sont des noms (notion-get-suggested-edit).
 # « find » n'y est pas : find_and_replace modifie.
 VERBES_LECTURE=" get list search read fetch query view count describe export download "
+# Création d'agenda : un verbe de création dans un nom d'outil qui parle d'un événement.
+# « meeting » n'y est pas : une note de réunion est une page.
+VERBES_CREATION=" create add insert new "
+NOMS_AGENDA=" event events appointment appointments "
 
 # verbe_sensible <nom-outil> : met le premier verbe gardé dans VERBE, ou "".
-# GENRE vaut "action sensible" ou "modification".
+# GENRE vaut "action sensible", "modification" ou "création d'agenda".
 verbe_sensible() {
   local nom="${1##*__}" sep="" i c prec="" j s
   VERBE=""; GENRE="action sensible"
@@ -42,10 +47,12 @@ verbe_sensible() {
   for s in $SOUS_CHAINES; do
     if [[ "$sep" == *"$s"* ]]; then VERBE="$s"; return; fi
   done
-  # Aucun verbe sensible : chercher une modification, sauf brouillon ou lecture.
+  # Aucun verbe sensible : chercher une modification ou une création d'agenda,
+  # sauf brouillon ou lecture.
   [ "${#mots[@]}" -gt 0 ] || return
-  local compose=0 avant=""
+  local compose=0 avant="" agenda=0
   for j in "${mots[@]}"; do
+    if [[ "$NOMS_AGENDA" == *" $j "* ]]; then agenda=1; fi
     # Un nom composé (search_and_replace, get_or_update) n'est pas une simple lecture.
     case "$j" in and|or|then) compose=1 ;; esac
     # Brouillon : libre, sauf « to draft » (remettre en brouillon dépublie).
@@ -55,6 +62,7 @@ verbe_sensible() {
   for j in "${mots[@]}"; do
     if [ "$compose" -eq 0 ] && [[ "$VERBES_LECTURE" == *" $j "* ]]; then return; fi
     if [[ "$VERBES_MODIFICATION" == *" $j "* ]]; then VERBE="$j"; GENRE="modification"; return; fi
+    if [ "$agenda" -eq 1 ] && [[ "$VERBES_CREATION" == *" $j "* ]]; then VERBE="$j"; GENRE="création d'agenda"; return; fi
   done
 }
 

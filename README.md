@@ -8,7 +8,7 @@ Ce que tu obtiens :
 - un **brief du matin**, chaque jour de semaine à 8 h, avec tes priorités, tes rendez-vous et tes projets en retard (`/aios:brief` pour l'avoir à tout moment), et un rappel du bilan le dimanche ;
 - la **lecture de tes documents** (PDF, Word, images) : dépose-les dans le dossier `AIOS/a-lire` de ton Google Drive, même depuis ton téléphone, puis `/aios:lire` en fait des fiches de lecture rangées dans ton vault, en gardant les originaux dans Drive ;
 - tes **recettes** : explique une fois une tâche qui revient, `/aios:creer-recette` en garde la marche à suivre dans ton vault ; et tes **réglages** : quand tu corriges plusieurs fois la même chose, le bilan propose de le retenir, et ça survit aux mises à jour ;
-- un **garde-fou** : rien n'est envoyé, publié, supprimé ou modifié sans ton accord ;
+- un **garde-fou** : rien n'est envoyé, publié, supprimé ou modifié sans ton accord, et aucun événement n'est créé dans ton agenda sans ton accord ;
 - une **sauvegarde automatique** de ton vault.
 
 Le premier jour, l'AIOS installe l'essentiel. Le brief du matin, la sauvegarde en ligne et la lecture des documents te sont proposés ensuite, un par semaine, au moment de ton bilan. Tu peux aussi en demander un quand tu veux.

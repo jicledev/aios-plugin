@@ -7,6 +7,14 @@ Ce fichier est lu par la commande `demarrer` quand elle est relancée sur un vau
 
 Les versions sont listées de la plus récente à la plus ancienne.
 
+## 0.9.1
+
+**Règles ajoutées**
+- Section « Sécurité » : la puce « **Créer un événement d'agenda demande aussi ma validation** », après la règle sur ce qui est envoyé, publié, programmé, supprimé ou modifié. Le garde-fou retient désormais aussi la création d'un événement d'agenda.
+
+**Phrases remplacées**
+- Aucune.
+
 ## 0.9.0
 
 **Règles ajoutées**
